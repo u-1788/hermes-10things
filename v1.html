@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>装上 Hermes Agent 之后必做10件事</title>
+  <style>
+    :root {
+      --bg-deep: #060e1e; --bg-mid: #0a2a5e;
+      --bg-card: rgba(10,42,94,0.5);
+      --gold: #ffd54f; --gold-dim: rgba(255,213,79,0.15);
+      --white: #fff; --text-muted: rgba(255,255,255,0.55);
+      --radius: 16px; --shadow: 0 8px 32px rgba(0,0,0,0.35);
+      --font: "PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+      --transition: 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font); background: var(--bg-deep);
+      color: var(--white); -webkit-font-smoothing: antialiased;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      padding: 40px 20px; position: relative; overflow: hidden;
+      background: linear-gradient(135deg,#0a2a5e 0%,#060e1e 50%,#0a1a3e 100%);
+    }
+    #particle-canvas {
+      position: absolute; top:0; left:0;
+      width:100%; height:100%; pointer-events: none; z-index:1;
+    }
+    .hero-content { position:relative; z-index:2; max-width:800px; }
+    .kicker {
+      font-size:14px; color:var(--gold); letter-spacing:6px;
+      margin-bottom:24px; text-transform:uppercase;
+    }
+    .hero h1 {
+      font-size:48px; font-weight:800;
+      background: linear-gradient(135deg,#fff 0%,var(--gold) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; margin-bottom:20px; line-height:1.3;
+    }
+    .hero .subtitle {
+      font-size:20px; color:var(--text-muted);
+      margin-bottom:16px; letter-spacing:2px;
+    }
+    .hero .tagline {
+      display:inline-flex; gap:20px; padding:10px 28px;
+      border-radius:30px; background:var(--gold-dim);
+      border:1px solid rgba(255,213,79,0.2);
+      font-size:14px; color:var(--gold); margin-bottom:30px;
+    }
+    .hero-line {
+      width:120px; height:2px;
+      background:linear-gradient(90deg,transparent,var(--gold),transparent);
+      margin:0 auto 36px;
+    }
+    .hero-desc {
+      font-size:16px; color:var(--text-muted); line-height:1.8;
+      margin-bottom:36px; max-width:600px; margin:0 auto 36px;
+    }
+    .cta-group { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+    .btn {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:14px 36px; border-radius:30px;
+      font-size:16px; font-weight:600; cursor:pointer;
+      transition:var(--transition); text-decoration:none;
+      letter-spacing:1px; border:none;
+    }
+    .btn-primary {
+      background:var(--gold); color:var(--bg-deep);
+      box-shadow:0 4px 20px rgba(255,213,79,0.3);
+    }
+    .btn-primary:hover { transform:translateY(-2px); }
+    .scroll-hint {
+      position:absolute; bottom:30px; left:50%;
+      transform:translateX(-50%); z-index:2;
+      color:var(--text-muted); font-size:13px;
+      animation:bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%,100%{transform:translateX(-50%) translateY(0)}
+      50%{transform:translateX(-50%) translateY(8px)}
+    }
+
+    /* Section */
+    section { padding:80px 20px; max-width:1100px; margin:0 auto; }
+    .section-title { text-align:center; margin-bottom:50px; }
+    .section-title h2 { font-size:32px; font-weight:700; margin-bottom:12px; }
+    .section-title p { font-size:15px; color:var(--text-muted); }
+    .section-title .gold-line {
+      width:60px; height:3px; background:var(--gold);
+      margin:16px auto 0; border-radius:2px;
+    }
+
+    /* Grid */
+    .things-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+
+    .thing-card {
+      background:rgba(10,42,94,0.35); backdrop-filter:blur(8px);
+      border:1px solid rgba(255,213,79,0.08);
+      border-radius:var(--radius); padding:24px;
+      transition:var(--transition); position:relative; overflow:hidden;
+    }
+    .thing-card::before {
+      content:''; position:absolute; top:0; left:0;
+      width:4px; height:100%; background:var(--gold);
+      opacity:0; transition:var(--transition);
+    }
+    .thing-card:hover::before{opacity:1}
+    .thing-card:hover{transform:translateY(-3px);border-color:rgba(255,213,79,0.2)}
+
+    .thing-number {
+      display:inline-flex; align-items:center; justify-content:center;
+      width:36px; height:36px; border-radius:50%;
+      background:var(--gold-dim); color:var(--gold);
+      font-size:14px; font-weight:800; margin-bottom:12px;
+    }
+    .thing-card h3 {
+      font-size:18px; font-weight:700; margin-bottom:8px; color:var(--white);
+    }
+    .thing-icon{font-size:24px;margin-right:8px}
+    .thing-sub{font-size:14px;color:var(--gold);margin-bottom:8px;font-weight:500}
+    .thing-card p{font-size:13px;color:var(--text-muted);line-height:1.7}
+    .thing-tag {
+      display:inline-block; margin-top:10px; padding:3px 12px;
+      border-radius:20px; font-size:11px; font-weight:600;
+      background:var(--gold-dim); color:var(--gold);
+    }
+
+    /* Footer */
+    footer {
+      text-align:center; padding:30px 20px;
+      border-top:1px solid rgba(255,213,79,0.06);
+    }
+    footer p{font-size:13px;color:var(--text-muted);line-height:1.8}
+
+    @media(max-width:768px) {
+      .hero h1{font-size:32px}
+      .things-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<header class="hero">
+  <canvas id="particle-canvas"></canvas>
+  <div class="hero-content">
+    <div class="kicker">✦ Hermes Agent 实战指南</div>
+    <h1>装上 Hermes Agent 之后<br>必做10件事</h1>
+    <p class="subtitle">从安装到盈利 · 从了解到推广 · 从用户到资金</p>
+    <div class="tagline">🔥 70%实操 · 20%案例 · 10%心法</div>
+    <div class="hero-line"></div>
+    <p class="hero-desc">
+      Hermes Agent 装好了，然后呢？<br>
+      这10件事帮你从「装上了」到「用起来」再到「赚回来」
+    </p>
+    <div class="cta-group">
+      <a href="#things" class="btn btn-primary">📋 查看10件事</a>
+    </div>
+  </div>
+  <div class="scroll-hint">↓ 向下滚动</div>
+</header>
+
+<section id="things">
+  <div class="section-title">
+    <h2>装上之后必做 <span style="color:var(--gold)">10</span> 件事</h2>
+    <p>从立魂到进化，一步步搭起你的 AI 数字员工团队</p>
+    <div class="gold-line"></div>
+  </div>
+
+  <div class="things-grid" id="grid"></div>
+</section>
+
+<footer>
+  <p>
+    © 2026 文山州互联网协会 · 滇边AI · 心学智造 · All rights reserved.<br>
+    <span style="font-size:12px;color:var(--text-muted)">从投资物到投资人，先修心再学器</span>
+  </p>
+</footer>
+
+<script>
+(function(){
+  const c=document.getElementById('particle-canvas'),ctx=c.getContext('2d');
+  let p=[],a;
+  function r(){c.width=window.innerWidth;c.height=window.innerHeight}
+  class P{
+    constructor(){this.reset()}
+    reset(){this.x=Math.random()*c.width;this.y=Math.random()*c.height;this.s=Math.random()*2+0.5;this.sx=(Math.random()-0.5)*0.6;this.sy=(Math.random()-0.5)*0.6;this.o=Math.random()*0.5+0.1}
+    update(){this.x+=this.sx;this.y+=this.sy;if(this.x<0||this.x>c.width)this.sx*=-1;if(this.y<0||this.y>c.height)this.sy*=-1}
+    draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.s,0,Math.PI*2);ctx.fillStyle=`rgba(255,213,79,${this.o})`;ctx.fill()}
+  }
+  function init(){r();p=Array.from({length:80},()=>new P())}
+  function animate(){
+    ctx.clearRect(0,0,c.width,c.height);
+    p.forEach(v=>{v.update();v.draw()});
+    for(let i=0;i<p.length;i++)for(let j=i+1;j<p.length;j++){const dx=p[i].x-p[j].x,dy=p[i].y-p[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<120){ctx.beginPath();ctx.moveTo(p[i].x,p[i].y);ctx.lineTo(p[j].x,p[j].y);ctx.strokeStyle=`rgba(255,213,79,${0.08*(1-d/120)})`;ctx.lineWidth=0.5;ctx.stroke()}}
+    a=requestAnimationFrame(animate)
+  }
+  window.addEventListener('resize',r);init();animate()
+})();
+
+const items = [
+  {icon:'🧭',title:'定海神针 · 配置 SOUL.md',sub:'立魂 · 定义 Agent 人格',desc:'给 Agent 注入灵魂——你想要什么样的 AI 员工？在 SOUL.md 里写下人格，Agent 就有了行为准则。',tag:'🕐 5分钟 · 一次配置永久生效'},
+  {icon:'👁️',title:'火眼金睛 · 接入 Camofox 反爬',sub:'开眼 · 浏览器自动化抓取',desc:'Agent 需要「眼睛」看网页。Camofox 提供反检测能力，让 Agent 获取真实世界数据。',tag:'🕐 10分钟 · Docker一键部署'},
+  {icon:'👂',title:'顺风耳 · 配置网络搜索',sub:'接耳 · 实时信息检索',desc:'配置搜索 API，Agent 能实时检索最新资讯、行业报告。',tag:'🕐 5分钟 · 月均成本≈一杯奶茶'},
+  {icon:'💰',title:'经济引擎 · 配置副模型',sub:'省钱 · 辅助任务分流',desc:'主模型处理核心决策，副模型处理视觉分析、网页提取——成本直降60%。',tag:'🕐 5分钟 · 成本优化利器'},
+  {icon:'🧠',title:'过目不忘 · 三层记忆系统',sub:'存忆 · 从对话到长期知识',desc:'MEMORY.md记偏好 → MCP插件接数据库 → SQLite全文检索。Agent 越用越懂你。',tag:'🕐 15分钟 · 知识资产持续积累'},
+  {icon:'📜',title:'全程记录 · Hooks 审计',sub:'留痕 · 每步操作可追溯',desc:'配置审计钩子，Agent 执行的每条命令自动记录。合规审计、问题回溯一站式搞定。',tag:'🕐 5分钟 · 合规必备'},
+  {icon:'🛡️',title:'安全堡垒 · Docker 沙箱',sub:'筑墙 · 隔离执行环境',desc:'Agent 执行的代码跑在 Docker 容器里，资源受限、文件隔离，安全第一。',tag:'🕐 10分钟 · 安全第一'},
+  {icon:'🤝',title:'团队作战 · 多 Agent 协作',sub:'组队 · 一人抵一个团队',desc:'最多 3 个 Agent 并行工作：一个写文案、一个做图、一个发社群。',tag:'🕐 10分钟 · 效果立现'},
+  {icon:'🔒',title:'永不丢失 · 三层备份',sub:'防灾 · 本地+定时+远程',desc:'Git版本控制→每周打包→远程仓库。配置写一次，安心一辈子。',tag:'🕐 10分钟 · 一次配置永久安心'},
+  {icon:'🌱',title:'持续进化 · 沉淀 Skill 技能库',sub:'成长 · 从用工具到造工具',desc:'每次成功的操作都沉淀成 Skill，下次直接复用。越用越强。',tag:'🕐 持续积累 · 复利效应'},
+];
+
+const grid = document.getElementById('grid');
+items.forEach(item => {
+  const card = document.createElement('div');
+  card.className = 'thing-card';
+  card.innerHTML = `
+    <div class="thing-number">🔸</div>
+    <h3><span class="thing-icon">${item.icon}</span> ${item.title}</h3>
+    <p class="thing-sub">${item.sub}</p>
+    <p>${item.desc}</p>
+    <span class="thing-tag">${item.tag}</span>
+  `;
+  grid.appendChild(card);
+});
+</script>
+</body>
+</html>
