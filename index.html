@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hermes Agent 一键部署</title>
+  <style>
+    :root {
+      --bg-deep: #060e1e; --bg-mid: #0a2a5e;
+      --bg-card: rgba(10,42,94,0.45);
+      --gold: #ffd54f; --gold-dim: rgba(255,213,79,0.12);
+      --white: #fff; --muted: rgba(255,255,255,0.55);
+      --radius: 16px; --radius-sm: 10px;
+      --font: "PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+      --transition: 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font);background:var(--bg-deep);color:var(--white);-webkit-font-smoothing:antialiased}
+    
+    /* Hero */
+    .hero{
+      min-height:100vh;display:flex;flex-direction:column;
+      align-items:center;justify-content:center;text-align:center;
+      padding:40px 20px;position:relative;overflow:hidden;
+      background:linear-gradient(135deg,#0a2a5e 0%,#060e1e 50%,#0a1a3e 100%);
+    }
+    #particle-canvas{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}
+    .hero-content{position:relative;z-index:2;max-width:800px}
+    .kicker{font-size:14px;color:var(--gold);letter-spacing:6px;margin-bottom:20px}
+    .hero h1{
+      font-size:46px;font-weight:800;
+      background:linear-gradient(135deg,#fff 0%,var(--gold) 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      background-clip:text;margin-bottom:16px;line-height:1.3;
+    }
+    .hero .sub{font-size:18px;color:var(--muted);margin-bottom:12px;letter-spacing:2px}
+    .hero .tagline{
+      display:inline-block;padding:8px 24px;border-radius:30px;
+      background:var(--gold-dim);border:1px solid rgba(255,213,79,0.2);
+      font-size:13px;color:var(--gold);margin-bottom:24px;
+    }
+    .hero-line{width:100px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0 auto 24px}
+    .hero-desc{font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:30px;max-width:560px;margin:0 auto 30px}
+    .cta-btn{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:14px 36px;border-radius:30px;
+      background:var(--gold);color:var(--bg-deep);
+      font-size:16px;font-weight:700;text-decoration:none;border:none;cursor:pointer;
+      box-shadow:0 4px 20px rgba(255,213,79,0.3);transition:var(--transition);
+    }
+    .cta-btn:hover{transform:translateY(-2px)}
+    .scroll-hint{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);z-index:2;color:var(--muted);font-size:13px;animation:bounce 2s infinite}
+    @keyframes bounce{0%,100%{transform:translateX(-50%)translateY(0)}50%{transform:translateX(-50%)translateY(8px)}}
+
+    /* Section */
+    section{padding:64px 20px;max-width:1000px;margin:0 auto}
+    .sec-title{text-align:center;margin-bottom:36px}
+    .sec-title h2{font-size:28px;font-weight:700;margin-bottom:8px}
+    .sec-title p{font-size:14px;color:var(--muted)}
+    .gold-line{width:50px;height:3px;background:var(--gold);margin:14px auto 0;border-radius:2px}
+
+    /* Grid - 10 items as real links */
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+    .card{
+      display:block;
+      background:var(--bg-card);backdrop-filter:blur(8px);
+      border:1px solid rgba(255,213,79,0.06);
+      border-radius:var(--radius);padding:22px 20px;
+      transition:var(--transition);position:relative;overflow:hidden;
+      cursor:pointer;text-decoration:none;color:inherit;
+    }
+    .card::before{
+      content:'';position:absolute;top:0;left:0;width:4px;height:100%;
+      background:var(--gold);opacity:0;transition:var(--transition);
+    }
+    .card:hover::before{opacity:1}
+    .card:hover{transform:translateY(-3px);border-color:rgba(255,213,79,0.2)}
+    .card-num{
+      display:inline-flex;align-items:center;justify-content:center;
+      width:34px;height:34px;border-radius:50%;
+      background:var(--gold-dim);color:var(--gold);font-size:13px;font-weight:800;margin-bottom:10px;
+    }
+    .card h3{font-size:17px;font-weight:700;margin-bottom:6px;color:var(--white)}
+    .card .icon{font-size:20px;margin-right:6px}
+    .card .sub-label{font-size:13px;color:var(--gold);margin-bottom:6px;font-weight:500}
+    .card p{font-size:13px;color:var(--muted);line-height:1.6}
+    .card .action-hint{display:inline-block;margin-top:10px;font-size:11px;color:var(--gold);font-weight:600}
+
+    /* Pricing */
+    .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:800px;margin:0 auto}
+    .pricing-card{
+      background:var(--bg-card);backdrop-filter:blur(8px);
+      border:1px solid rgba(255,213,79,0.06);
+      border-radius:var(--radius);padding:28px 22px;text-align:center;transition:var(--transition);
+    }
+    .pricing-card:hover{transform:translateY(-3px);border-color:rgba(255,213,79,0.15)}
+    .pricing-card.featured{border-color:var(--gold);position:relative}
+    .pricing-card.featured::before{
+      content:'🔥 推荐';position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+      background:var(--gold);color:var(--bg-deep);padding:3px 16px;border-radius:20px;
+      font-size:11px;font-weight:700;
+    }
+    .pricing-name{font-size:17px;font-weight:700;margin-bottom:6px}
+    .pricing-price{font-size:34px;font-weight:900;color:var(--gold)}
+    .pricing-unit{font-size:14px;color:var(--muted);margin-bottom:4px}
+    .pricing-desc{font-size:12px;color:var(--muted);margin-bottom:12px}
+    .pricing-feats{list-style:none;text-align:left;margin:0}
+    .pricing-feats li{padding:5px 0;font-size:12px;color:var(--muted)}
+    .pricing-feats li::before{content:'✓ ';color:var(--gold);font-weight:700}
+
+    /* Services */
+    .service-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .service-card{
+      background:var(--bg-card);backdrop-filter:blur(8px);
+      border:1px solid rgba(255,213,79,0.06);
+      border-radius:var(--radius);padding:22px 20px;text-align:center;transition:var(--transition);
+    }
+    .service-card:hover{transform:translateY(-2px);border-color:rgba(255,213,79,0.12)}
+    .service-icon{font-size:30px;margin-bottom:8px}
+    .service-card h4{font-size:16px;font-weight:700;color:var(--gold);margin-bottom:6px}
+    .service-card p{font-size:12px;color:var(--muted);line-height:1.6}
+
+    /* Footer */
+    .footer-wrap{
+      background:linear-gradient(180deg,transparent,rgba(10,42,94,0.15));
+      padding:24px 20px;text-align:center;
+      border-top:1px solid rgba(255,213,79,0.06);
+    }
+    .footer-wrap .footer-main{font-size:14px;color:var(--gold);line-height:1.8;font-weight:500}
+    .footer-wrap .footer-legal{font-size:12px;color:var(--muted);display:inline-block}
+
+    /* Modal */
+    .modal{display:none;position:fixed;inset:0;z-index:999;align-items:center;justify-content:center}
+    .modal.show{display:flex}
+    .modal-bg{position:absolute;inset:0;background:rgba(6,14,30,0.85)}
+    .modal-box{
+      position:relative;z-index:1;width:90%;max-width:640px;max-height:85vh;overflow-y:auto;
+      background:linear-gradient(135deg,#0a2a5e,#060e1e);
+      border:1px solid rgba(255,213,79,0.15);border-radius:20px;padding:32px 28px;
+    }
+    .modal-header{text-align:center;margin-bottom:24px}
+    .modal-icon{font-size:40px;margin-bottom:10px}
+    .modal-header h3{font-size:22px;font-weight:800;color:var(--gold);margin-bottom:6px}
+    .modal-header p{font-size:13px;color:var(--muted)}
+    .modal-traits{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px}
+    .trait{
+      padding:14px;border-radius:12px;text-align:center;cursor:pointer;
+      border:1px solid rgba(255,213,79,0.08);background:rgba(10,42,94,0.3);
+      transition:var(--transition);user-select:none;
+    }
+    .trait:hover{border-color:rgba(255,213,79,0.2)}
+    .trait.selected{
+      border-color:var(--gold);background:var(--gold-dim);box-shadow:0 0 12px rgba(255,213,79,0.15);
+    }
+    .trait-icon{font-size:28px;margin-bottom:4px}
+    .trait-name{font-size:14px;font-weight:700;color:var(--white);margin-bottom:2px}
+    .trait-desc{font-size:11px;color:var(--muted)}
+    .modal-footer{display:flex;gap:10px;flex-direction:column}
+    .modal-btn{
+      width:100%;padding:12px;border-radius:30px;border:none;cursor:pointer;
+      background:var(--gold);color:var(--bg-deep);font-size:15px;font-weight:700;
+      transition:var(--transition);
+    }
+    .modal-btn:disabled{opacity:0.4;cursor:not-allowed}
+    .modal-btn:not(:disabled):hover{transform:translateY(-1px)}
+    .modal-btn-secondary{
+      width:100%;padding:10px;border-radius:30px;border:1px solid rgba(255,213,79,0.2);
+      background:transparent;color:var(--muted);font-size:13px;cursor:pointer;
+    }
+
+    @media(max-width:768px){
+      .hero h1{font-size:30px}
+      .grid{grid-template-columns:1fr}
+      .pricing-grid{grid-template-columns:1fr;max-width:300px}
+      .service-grid,.peace-grid{grid-template-columns:1fr}
+      section{padding:40px 16px}
+    }
+  </style>
+</head>
+<body>
+
+<!-- 性格选择弹窗 -->
+<div class="modal" id="personalityModal">
+  <div class="modal-bg" onclick="closeModal()"></div>
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-icon">🎭</div>
+      <h3>选择AI性格</h3>
+      <p>选一个或多个性格，决定你的AI数字员工是什么样的人</p>
+    </div>
+    <div class="modal-traits" id="traitGrid">
+      <div class="trait" data-trait="沉稳专家" onclick="toggleTrait(this)">
+        <div class="trait-icon">🧑‍🔬</div>
+        <div class="trait-name">沉稳专家</div>
+        <div class="trait-desc">严谨专业，逻辑清晰</div>
+      </div>
+      <div class="trait" data-trait="热血伙伴" onclick="toggleTrait(this)">
+        <div class="trait-icon">🔥</div>
+        <div class="trait-name">热血伙伴</div>
+        <div class="trait-desc">干劲十足，目标导向</div>
+      </div>
+      <div class="trait" data-trait="温润导师" onclick="toggleTrait(this)">
+        <div class="trait-icon">📖</div>
+        <div class="trait-name">温润导师</div>
+        <div class="trait-desc">耐心讲解，循循善诱</div>
+      </div>
+      <div class="trait" data-trait="幽默风趣" onclick="toggleTrait(this)">
+        <div class="trait-icon">😄</div>
+        <div class="trait-name">幽默风趣</div>
+        <div class="trait-desc">轻松活泼，会讲段子</div>
+      </div>
+      <div class="trait" data-trait="高效执行" onclick="toggleTrait(this)">
+        <div class="trait-icon">⚡</div>
+        <div class="trait-name">高效执行</div>
+        <div class="trait-desc">不废话，直接干</div>
+      </div>
+      <div class="trait" data-trait="暖心倾听" onclick="toggleTrait(this)">
+        <div class="trait-icon">💛</div>
+        <div class="trait-name">暖心倾听</div>
+        <div class="trait-desc">善解人意，共情力强</div>
+      </div>
+      <div class="trait" data-trait="创意脑洞" onclick="toggleTrait(this)">
+        <div class="trait-icon">💡</div>
+        <div class="trait-name">创意脑洞</div>
+        <div class="trait-desc">天马行空，点子多</div>
+      </div>
+      <div class="trait" data-trait="直言不讳" onclick="toggleTrait(this)">
+        <div class="trait-icon">🎯</div>
+        <div class="trait-name">直言不讳</div>
+        <div class="trait-desc">有话直说，不绕弯子</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-btn" onclick="confirmTraits()" id="confirmBtn" disabled>✅ 选择后点击下一步部署</button>
+      <button class="modal-btn-secondary" onclick="closeModal()">取消</button>
+    </div>
+  </div>
+</div>
+
+<header class="hero">
+  <canvas id="particle-canvas"></canvas>
+  <div class="hero-content">
+    <div class="kicker">✦ Hermes Agent · 一键部署</div>
+    <h1>装上 Hermes Agent 之后<br>必做10件事</h1>
+    <p class="sub">点一下 · 跳转到智能体 · 自主学完配好</p>
+    <div class="tagline">👆 不懂代码 · 没时间研究 · 照样用上AI数字员工</div>
+    <div class="hero-line"></div>
+    <p class="hero-desc">
+      10项核心配置，点击即跳转学习。<br>
+      让智能体自己去看、去学、去完成。
+    </p>
+    <a href="#list" class="cta-btn">📋 查看10件事</a>
+  </div>
+  <div class="scroll-hint">↓ 向下滚动</div>
+</header>
+
+<section id="list">
+  <div class="sec-title">
+    <h2>一键部署清单</h2>
+    <p>点击任意项目 · 跳转到智能体自主学习</p>
+    <div class="gold-line"></div>
+  </div>
+  <div class="grid" id="cardGrid"></div>
+</section>
+
+<!-- 报价方案 -->
+<section id="pricing">
+  <div class="sec-title">
+    <h2>💎 透明定价</h2>
+    <p>从免费体验到企业级维护，按需选择</p>
+    <div class="gold-line"></div>
+  </div>
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <div class="pricing-name">🎯 入门版</div>
+      <div class="pricing-price">免费</div>
+      <div class="pricing-desc">体验核心功能，快速上手</div>
+      <ul class="pricing-feats">
+        <li>10项基础配置清单</li>
+        <li>AI自主学习触发</li>
+        <li>社区文档支持</li>
+        <li>基础更新</li>
+      </ul>
+    </div>
+    <div class="pricing-card featured">
+      <div class="pricing-name">🚀 专业版</div>
+      <div class="pricing-price">¥199</div>
+      <div class="pricing-unit">/年</div>
+      <div class="pricing-desc">个人创业者首选 · 性价比之王</div>
+      <ul class="pricing-feats">
+        <li>全部10项一键部署包</li>
+        <li>Docker沙箱预配置</li>
+        <li>Camofox浏览器集成</li>
+        <li>售后系统维护支持</li>
+        <li>持续版本升级</li>
+        <li>VIP 答疑通道</li>
+      </ul>
+    </div>
+    <div class="pricing-card">
+      <div class="pricing-name">🏢 企业版</div>
+      <div class="pricing-price">定制</div>
+      <div class="pricing-desc">团队/企业专属方案</div>
+      <ul class="pricing-feats">
+        <li>私有化部署</li>
+        <li>多Agent定制配置</li>
+        <li>SLA技术保障</li>
+        <li>专属运维工程师</li>
+        <li>7×24小时响应</li>
+        <li>上门培训服务</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 维护服务 -->
+<section>
+  <div class="sec-title">
+    <h2>🛠️ 后期系统维护</h2>
+    <p>买了不是结束，服务才刚刚开始</p>
+    <div class="gold-line"></div>
+  </div>
+  <div class="service-grid">
+    <div class="service-card">
+      <div class="service-icon">🔄</div>
+      <h4>持续更新</h4>
+      <p>紧跟 Hermes Agent 版本迭代，自动推送更新包，你只管用，升级的事交给我们。</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🔧</div>
+      <h4>故障修复</h4>
+      <p>使用过程中遇到任何问题，远程诊断、一键修复，不影响你的正常工作。</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📚</div>
+      <h4>使用指导</h4>
+      <p>从部署到日常使用，图文+视频教程全覆盖。不懂随时问，有人答。</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🛡️</div>
+      <h4>安全巡检</h4>
+      <p>定期检查系统安全状态，及时修补漏洞，确保你的AI员工安全稳定运行。</p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<div class="footer-wrap">
+  <p class="footer-main">
+    文山州互联网协会 · 滇边AI · 心学智造<br>
+    ws.aiedu.yn.cn · 余川 13577683126<br>
+    <span class="footer-legal">© 2026 文山州互联网协会 · All rights reserved.</span>
+  </p>
+</div>
+
+<!-- Particle -->
+<script>
+(function(){
+  const c=document.getElementById('particle-canvas'),ctx=c.getContext('2d');
+  let p=[],a;
+  function r(){c.width=window.innerWidth;c.height=window.innerHeight}
+  class P{
+    constructor(){this.reset()}
+    reset(){this.x=Math.random()*c.width;this.y=Math.random()*c.height;this.s=Math.random()*2+0.5;this.sx=(Math.random()-0.5)*0.6;this.sy=(Math.random()-0.5)*0.6;this.o=Math.random()*0.5+0.1}
+    update(){this.x+=this.sx;this.y+=this.sy;if(this.x<0||this.x>c.width)this.sx*=-1;if(this.y<0||this.y>c.height)this.sy*=-1}
+    draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.s,0,Math.PI*2);ctx.fillStyle=`rgba(255,213,79,${this.o})`;ctx.fill()}
+  }
+  function init(){r();p=Array.from({length:80},()=>new P())}
+  function animate(){
+    ctx.clearRect(0,0,c.width,c.height);
+    p.forEach(v=>{v.update();v.draw()});
+    for(let i=0;i<p.length;i++)for(let j=i+1;j<p.length;j++){const dx=p[i].x-p[j].x,dy=p[i].y-p[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<120){ctx.beginPath();ctx.moveTo(p[i].x,p[i].y);ctx.lineTo(p[j].x,p[j].y);ctx.strokeStyle=`rgba(255,213,79,${0.08*(1-d/120)})`;ctx.lineWidth=0.5;ctx.stroke()}}
+    a=requestAnimationFrame(animate)
+  }
+  window.addEventListener('resize',r);init();animate()
+})();
+</script>
+
+<script>
+const items = [
+  {n:'01',icon:'🧭',title:'联网自主操作',sub:'AI自己看网页、填表格、做文档',desc:'像真人一样操作电脑，自动联网学习配置。'},
+  {n:'02',icon:'🎭',title:'定义AI分身',sub:'从10+种性格中挑选',desc:'选一个性格，AI就有了自己的行为方式。'},
+  {n:'03',icon:'⚖️',title:'分清任务大小',sub:'大模型做主，小模型跑腿',desc:'贵的干复杂活，便宜的干重复活，成本省大半。'},
+  {n:'04',icon:'🧠',title:'自主记忆系统',sub:'AI自动记住历史对话',desc:'聊过什么AI自己记住，不用你重复说。'},
+  {n:'05',icon:'🌐',title:'联网搜索升级',sub:'不让AI闭卷考试',desc:'给AI装上实时搜索，查资料一步到位。'},
+  {n:'06',icon:'📜',title:'审计自动化',sub:'每步操作都有记录',desc:'AI干了什么全部自动留存，随时可查。'},
+  {n:'07',icon:'🛡️',title:'Docker安全箱',sub:'危险命令自动拦截',desc:'在沙箱里干活，危险操作自动被拦住。'},
+  {n:'08',icon:'👥',title:'三人决策团队',sub:'产品+工程+用户三方辩论',desc:'三个AI角色辩论，给你最优解。'},
+  {n:'09',icon:'🔒',title:'三层备份策略',sub:'数据永不丢失',desc:'本地+云端+版本控制，三重保险。'},
+  {n:'10',icon:'🌱',title:'技能自动进化',sub:'越用越强，越积越值钱',desc:'完成任务自动变成技能，越用越聪明。'},
+];
+
+const grid = document.getElementById('cardGrid');
+items.forEach((item, idx) => {
+  const card = document.createElement('a');
+  card.className = 'card';
+  // 用 小优 的指令作为跳转目标 —— 让智能体去学习
+  card.href = `#learn-${item.n}`;
+  card.innerHTML = `
+    <div class="card-num">${item.n}</div>
+    <h3><span class="icon">${item.icon}</span> ${item.title}</h3>
+    <p class="sub-label">${item.sub}</p>
+    <p>${item.desc}</p>
+    <span class="action-hint">🤖 让智能体去学 →</span>
+  `;
+  card.addEventListener('click', (e) => {
+    e.preventDefault();
+    // 第2项：弹出性格选择弹窗
+    if (item.n === '02') {
+      document.getElementById('personalityModal').classList.add('show');
+      return;
+    }
+    // 其他项：跳转到学习页
+    const cmd = encodeURIComponent(`请帮我完成 Hermes Agent 配置第${item.n}项：「${item.title}」- ${item.sub}。自主学习并完成配置。`);
+    const agentUrl = `https://u-1788.github.io/hermes-deployer/learn.html?task=${item.n}&title=${encodeURIComponent(item.title)}&cmd=${cmd}`;
+    window.location.href = agentUrl;
+  });
+  grid.appendChild(card);
+});
+
+// 性格选择弹窗
+let selectedTraits = [];
+function toggleTrait(el) {
+  el.classList.toggle('selected');
+  const trait = el.dataset.trait;
+  const idx = selectedTraits.indexOf(trait);
+  if (idx > -1) selectedTraits.splice(idx, 1);
+  else selectedTraits.push(trait);
+  document.getElementById('confirmBtn').disabled = selectedTraits.length === 0;
+}
+function confirmTraits() {
+  if (selectedTraits.length === 0) return;
+  closeModal();
+  const traits = selectedTraits.join('、');
+  const cmd = encodeURIComponent(`请帮我完成 Hermes Agent 配置第02项「定义AI分身」：我的AI需要以下性格特质：${traits}。请根据这些性格生成专属 SOUL.md 人格文件并完成配置。`);
+  const agentUrl = `https://u-1788.github.io/hermes-deployer/learn.html?task=02&title=${encodeURIComponent('定义AI分身 - ' + traits)}&cmd=${cmd}`;
+  window.location.href = agentUrl;
+}
+function closeModal() {
+  document.getElementById('personalityModal').classList.remove('show');
+}
+</script>
+</body>
+</html>
