@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>智能体自主学习</title>
+  <style>
+    :root {
+      --bg-deep: #060e1e; --bg-mid: #0a2a5e;
+      --gold: #ffd54f; --gold-dim: rgba(255,213,79,0.12);
+      --white: #fff; --muted: rgba(255,255,255,0.55);
+      --radius: 16px;
+      --font: "PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:var(--font);background:var(--bg-deep);color:var(--white);min-height:100vh}
+    .container{max-width:700px;margin:0 auto;padding:40px 20px}
+
+    .back{
+      display:inline-flex;align-items:center;gap:6px;
+      color:var(--gold);text-decoration:none;font-size:14px;margin-bottom:30px;
+    }
+    .back:hover{opacity:0.8}
+
+    .task-badge{
+      display:inline-block;padding:4px 14px;border-radius:20px;
+      background:var(--gold-dim);color:var(--gold);font-size:12px;font-weight:700;margin-bottom:16px;
+    }
+    h1{font-size:30px;font-weight:800;margin-bottom:10px}
+    .sub{font-size:16px;color:var(--muted);margin-bottom:24px}
+
+    .cmd-box{
+      background:rgba(10,42,94,0.35);border:1px solid rgba(255,213,79,0.1);
+      border-radius:var(--radius);padding:20px;margin-bottom:24px;
+    }
+    .cmd-box .label{font-size:12px;color:var(--gold);margin-bottom:8px;font-weight:600}
+    .cmd-box .cmd-text{
+      font-size:13px;color:var(--white);line-height:1.6;
+      word-break:break-all;background:rgba(0,0,0,0.3);padding:14px;border-radius:8px;
+      font-family:"SF Mono","Courier New",monospace;
+    }
+    .cmd-box .copy-btn{
+      margin-top:10px;padding:6px 16px;border-radius:6px;
+      background:var(--gold-dim);border:1px solid rgba(255,213,79,0.2);
+      color:var(--gold);font-size:12px;cursor:pointer;font-weight:600;
+    }
+
+    .btn-primary{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:14px 32px;border-radius:30px;
+      background:var(--gold);color:var(--bg-deep);
+      font-size:15px;font-weight:700;border:none;cursor:pointer;
+      box-shadow:0 4px 20px rgba(255,213,79,0.3);width:100%;justify-content:center;
+    }
+    .btn-primary:hover{opacity:0.9}
+
+    .steps{margin-top:30px}
+    .steps h3{font-size:16px;color:var(--gold);margin-bottom:12px}
+    .step-item{
+      display:flex;gap:12px;align-items:flex-start;margin-bottom:12px;
+    }
+    .step-num{
+      width:28px;height:28px;border-radius:50%;
+      background:var(--gold-dim);color:var(--gold);
+      font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    }
+    .step-item p{font-size:13px;color:var(--muted);line-height:1.6;padding-top:4px}
+
+    .status-bar{
+      margin-top:24px;padding:16px;border-radius:10px;
+      background:rgba(10,42,94,0.25);text-align:center;display:none;
+    }
+    .status-bar.show{display:block}
+    .status-bar .loading{font-size:14px;color:var(--gold)}
+
+    @media(max-width:480px){
+      .container{padding:24px 16px}
+      h1{font-size:24px}
+    }
+  </style>
+</head>
+<body>
+<div class="container" id="app"></div>
+
+<script>
+// 10项任务数据
+const tasks = {
+  '01': { icon:'🧭', title:'联网自主操作', sub:'让AI自己打开网页、填表格、做文档', cmd:'请帮我完成 Hermes Agent 配置第01项「联网自主操作」：配置 Camofox 浏览器反爬环境，让AI具备真人级网页操作能力。请自主学习 Camofox 的安装、配置和 API 调用方法，完成后通知我。' },
+  '02': { icon:'🎭', title:'定义AI分身', sub:'从10+种性格中挑选，打造你的第二个自己', cmd:'请帮我完成 Hermes Agent 配置第02项「定义AI分身」：配置 SOUL.md 人格文件，让AI拥有专属性格和行为方式。请自主学习 SOUL.md 的格式和配置方法，根据我们的聊天记录生成一份个性化人格文件。' },
+  '03': { icon:'⚖️', title:'分清任务大小', sub:'大模型做主，小模型跑腿', cmd:'请帮我完成 Hermes Agent 配置第03项「分清任务大小」：配置主副模型系统。主模型处理复杂推理，副模型处理搜索、摘要等重复任务。请自主学习 auxiliary models 配置方法并完成设置。' },
+  '04': { icon:'🧠', title:'自主记忆系统', sub:'AI自动记住历史对话', cmd:'请帮我完成 Hermes Agent 配置第04项「自主记忆系统」：配置三层记忆架构。第一层 memory.md + user.md，第二层 MCP 插件，第三层 SQLite 全文检索。请自主学习并完成配置。' },
+  '05': { icon:'🌐', title:'联网搜索升级', sub:'不让AI闭卷考试', cmd:'请帮我完成 Hermes Agent 配置第05项「联网搜索升级」：配置网络搜索 API（Exa / Tavily），让AI具备实时信息检索能力。请自主学习 web.backend 配置方法并完成设置。' },
+  '06': { icon:'📜', title:'审计自动化', sub:'每步操作都有记录', cmd:'请帮我完成 Hermes Agent 配置第06项「审计自动化」：配置 Hooks 审计系统，让AI的每步操作自动记录命令、结果、时间戳、会话ID。请自主学习 Hooks 配置方法并完成设置。' },
+  '07': { icon:'🛡️', title:'Docker安全箱', sub:'危险命令自动拦截', cmd:'请帮我完成 Hermes Agent 配置第07项「Docker安全箱」：安装 Docker 并配置沙箱隔离环境，让危险命令在沙箱中执行，不威胁宿主机。请自主完成安装和配置。' },
+  '08': { icon:'👥', title:'三人决策团队', sub:'产品+工程+用户三方辩论', cmd:'请帮我完成 Hermes Agent 配置第08项「三人决策团队」：配置多 Agent 协作机制，创建三个 Agent 角色（产品经理、工程师、用户）进行辩论式决策。请自主学习 delegate_task 使用方法并完成配置。' },
+  '09': { icon:'🔒', title:'三层备份策略', sub:'本地+云端+版本控制', cmd:'请帮我完成 Hermes Agent 配置第09项「三层备份策略」：配置自动备份体系。Git 版本控制追历史 → 每周打包存本地 → 远程仓库防丢失。请自主完成三层备份配置。' },
+  '10': { icon:'🌱', title:'技能自动进化', sub:'越用越强，越积越值钱', cmd:'请帮我完成 Hermes Agent 配置第10项「技能自动进化」：配置 Skill 沉淀系统，让每次完成的任务自动生成可复用的 Markdown 技能文件。请自主学习 Skill 系统使用方法并完成初始化。' },
+};
+
+function getQuery(name) {
+  const url = new URL(window.location.href);
+  return url.searchParams.get(name);
+}
+
+const taskId = getQuery('task') || '01';
+const taskTitle = getQuery('title') || tasks[taskId]?.title || '自主学习';
+const taskCmd = getQuery('cmd') || tasks[taskId]?.cmd || '';
+
+const task = tasks[taskId];
+const app = document.getElementById('app');
+
+app.innerHTML = `
+  <a class="back" href="https://u-1788.github.io/hermes-deployer/">← 返回清单</a>
+  <div class="task-badge">${taskId ? `#${taskId}` : ''} ${task?.icon || '🤖'}</div>
+  <h1>${task?.title || taskTitle}</h1>
+  <p class="sub">${task?.sub || '智能体自主学习任务'}</p>
+
+  <button class="btn-primary" id="btn-learn">🚀 让智能体开始学习</button>
+
+  <div class="status-bar" id="statusBar">
+    <div class="loading">⏳ 指令已发送，智能体正在自主学习...</div>
+  </div>
+
+  <div class="steps">
+    <h3>📋 学习步骤</h3>
+    <div class="step-item">
+      <div class="step-num">1</div>
+      <p>智能体收到指令 → 开始分析任务目标</p>
+    </div>
+    <div class="step-item">
+      <div class="step-num">2</div>
+      <p>自主联网查阅相关文档和配置方法</p>
+    </div>
+    <div class="step-item">
+      <div class="step-num">3</div>
+      <p>执行配置命令 → 完成环境搭建</p>
+    </div>
+    <div class="step-item">
+      <div class="step-num">4</div>
+      <p>验证配置结果 → 通知完成</p>
+    </div>
+  </div>
+
+  <div class="cmd-box">
+    <div class="label">📝 智能体执行指令</div>
+    <div class="cmd-text" id="cmdText">${taskCmd || tasks[taskId]?.cmd || '请完成此配置任务。'}</div>
+    <button class="copy-btn" onclick="copyCmd()">📋 复制指令</button>
+  </div>
+`;
+
+function copyCmd() {
+  const cmd = document.getElementById('cmdText').textContent;
+  navigator.clipboard.writeText(cmd).then(() => {
+    alert('✅ 指令已复制，可以粘贴给智能体执行');
+  }).catch(() => {
+    // fallback
+    const ta = document.createElement('textarea');
+    ta.value = cmd;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert('✅ 指令已复制');
+  });
+}
+
+document.getElementById('btn-learn').addEventListener('click', function() {
+  const bar = document.getElementById('statusBar');
+  bar.classList.add('show');
+  this.textContent = '⏳ 学习中...';
+  this.disabled = true;
+
+  // 自动复制指令到剪贴板
+  copyCmd();
+
+  // 5秒后提示
+  setTimeout(() => {
+    bar.innerHTML = `
+      <div style="color:#4caf50;font-size:14px;">✅ 指令已发送！</div>
+      <div style="color:var(--muted);font-size:12px;margin-top:6px;">
+        智能体已收到学习指令，正在自主学习并配置。<br>
+        完成后会自动通知你。
+      </div>
+    `;
+  }, 5000);
+});
+</script>
+</body>
+</html>
