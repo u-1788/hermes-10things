@@ -110,7 +110,7 @@ const task = tasks[taskId];
 const app = document.getElementById('app');
 
 app.innerHTML = `
-  <a class="back" href="https://u-1788.github.io/hermes-deployer/">← 返回清单</a>
+  <a class="back" href="./">← 返回清单</a>
   <div class="task-badge">${taskId ? `#${taskId}` : ''} ${task?.icon || '🤖'}</div>
   <h1>${task?.title || taskTitle}</h1>
   <p class="sub">${task?.sub || '智能体自主学习任务'}</p>

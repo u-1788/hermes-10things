@@ -412,7 +412,7 @@ items.forEach((item, idx) => {
     }
     // 其他项：跳转到学习页
     const cmd = encodeURIComponent(`请帮我完成 Hermes Agent 配置第${item.n}项：「${item.title}」- ${item.sub}。自主学习并完成配置。`);
-    const agentUrl = `https://u-1788.github.io/hermes-deployer/learn.html?task=${item.n}&title=${encodeURIComponent(item.title)}&cmd=${cmd}`;
+    const agentUrl = `./learn.html?task=${item.n}&title=${encodeURIComponent(item.title)}&cmd=${cmd}`;
     window.location.href = agentUrl;
   });
   grid.appendChild(card);
@@ -433,7 +433,7 @@ function confirmTraits() {
   closeModal();
   const traits = selectedTraits.join('、');
   const cmd = encodeURIComponent(`请帮我完成 Hermes Agent 配置第02项「定义AI分身」：我的AI需要以下性格特质：${traits}。请根据这些性格生成专属 SOUL.md 人格文件并完成配置。`);
-  const agentUrl = `https://u-1788.github.io/hermes-deployer/learn.html?task=02&title=${encodeURIComponent('定义AI分身 - ' + traits)}&cmd=${cmd}`;
+  const agentUrl = `./learn.html?task=02&title=${encodeURIComponent('定义AI分身 - ' + traits)}&cmd=${cmd}`;
   window.location.href = agentUrl;
 }
 function closeModal() {
