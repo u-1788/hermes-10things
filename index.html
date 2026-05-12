@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hermes Agent 一键部署</title>
+  <title>Hermes Agent 一键部署 · SkillHub 商店版</title>
   <style>
     :root {
       --bg-deep: #060e1e; --bg-mid: #0a2a5e;
@@ -60,13 +60,26 @@
     .sec-title p{font-size:14px;color:var(--muted)}
     .gold-line{width:50px;height:3px;background:var(--gold);margin:14px auto 0;border-radius:2px}
 
-    /* Grid - 10 items as real links */
+    /* Toast */
+    .toast{
+      display:none;position:fixed;top:20px;left:50%;transform:translateX(-50%);
+      z-index:999;padding:12px 28px;border-radius:30px;
+      background:#4caf50;color:#fff;font-size:14px;font-weight:600;
+      box-shadow:0 4px 20px rgba(76,175,80,0.4);
+      animation:slideDown 0.3s ease;
+    }
+    .toast.show{display:block}
+    @keyframes slideDown{
+      0%{transform:translateX(-50%)translateY(-20px);opacity:0}
+      100%{transform:translateX(-50%)translateY(0);opacity:1}
+    }
+
+    /* Grid */
     .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
     .card{
-      display:block;
       background:var(--bg-card);backdrop-filter:blur(8px);
       border:1px solid rgba(255,213,79,0.06);
-      border-radius:var(--radius);padding:22px 20px;
+      border-radius:var(--radius);padding:20px;
       transition:var(--transition);position:relative;overflow:hidden;
       cursor:pointer;text-decoration:none;color:inherit;
     }
@@ -76,16 +89,66 @@
     }
     .card:hover::before{opacity:1}
     .card:hover{transform:translateY(-3px);border-color:rgba(255,213,79,0.2)}
+    .card-top{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px}
     .card-num{
-      display:inline-flex;align-items:center;justify-content:center;
+      flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;
       width:34px;height:34px;border-radius:50%;
-      background:var(--gold-dim);color:var(--gold);font-size:13px;font-weight:800;margin-bottom:10px;
+      background:var(--gold-dim);color:var(--gold);font-size:13px;font-weight:800;
     }
-    .card h3{font-size:17px;font-weight:700;margin-bottom:6px;color:var(--white)}
-    .card .icon{font-size:20px;margin-right:6px}
-    .card .sub-label{font-size:13px;color:var(--gold);margin-bottom:6px;font-weight:500}
-    .card p{font-size:13px;color:var(--muted);line-height:1.6}
-    .card .action-hint{display:inline-block;margin-top:10px;font-size:11px;color:var(--gold);font-weight:600}
+    .card-info{flex:1;min-width:0}
+    .card h3{font-size:16px;font-weight:700;margin-bottom:4px;color:var(--white)}
+    .card .icon{font-size:18px;margin-right:4px}
+    .card .desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:6px}
+    
+    /* SkillHub slug badge */
+    .slug-badge{
+      display:inline-flex;align-items:center;gap:4px;
+      padding:3px 10px;border-radius:6px;
+      background:rgba(100,181,246,0.1);border:1px solid rgba(100,181,246,0.15);
+      font-size:11px;font-family:'SF Mono','Fira Code','Consolas',monospace;
+      color:#64b5f6;margin-bottom:6px;
+    }
+    .slug-badge .tag{color:var(--muted);font-family:var(--font);font-size:10px}
+    
+    .card .install-line{
+      display:flex;align-items:center;gap:8px;
+      padding:6px 10px;border-radius:8px;
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.06);
+      font-size:11px;font-family:'SF Mono','Fira Code','Consolas',monospace;
+      color:var(--muted);
+    }
+    .card .install-line .cmd-text{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .card .copy-btn{
+      flex-shrink:0;padding:3px 12px;border-radius:6px;border:none;cursor:pointer;
+      background:rgba(255,213,79,0.15);color:var(--gold);
+      font-size:11px;font-weight:600;transition:var(--transition);
+    }
+    .card .copy-btn:hover{background:rgba(255,213,79,0.25)}
+    .card .copy-btn.done{background:#4caf50;color:#fff}
+
+    /* Copy All button */
+    .copy-all-wrap{text-align:center;margin-bottom:20px}
+    .btn-copy-all{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:10px 28px;border-radius:30px;border:1px solid rgba(255,213,79,0.2);
+      background:transparent;color:var(--gold);font-size:13px;font-weight:600;
+      cursor:pointer;transition:var(--transition);
+    }
+    .btn-copy-all:hover{background:var(--gold-dim);border-color:var(--gold)}
+    .btn-copy-all.done{background:#4caf50;color:#fff;border-color:#4caf50}
+
+    /* Step guide */
+    .guide{max-width:600px;margin:30px auto 0;text-align:center}
+    .guide h3{font-size:18px;font-weight:700;color:var(--gold);margin-bottom:16px}
+    .guide-steps{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+    .guide-step{
+      padding:10px 18px;border-radius:12px;
+      background:var(--bg-card);border:1px solid rgba(255,213,79,0.08);
+      font-size:13px;color:var(--muted);
+    }
+    .guide-step span{color:var(--gold);font-weight:700}
+    .guide-step em{color:var(--white);font-style:normal;font-weight:600}
 
     /* Pricing */
     .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:800px;margin:0 auto}
@@ -173,12 +236,14 @@
       .hero h1{font-size:30px}
       .grid{grid-template-columns:1fr}
       .pricing-grid{grid-template-columns:1fr;max-width:300px}
-      .service-grid,.peace-grid{grid-template-columns:1fr}
+      .service-grid{grid-template-columns:1fr}
       section{padding:40px 16px}
     }
   </style>
 </head>
 <body>
+
+<div class="toast" id="toast"></div>
 
 <!-- 性格选择弹窗 -->
 <div class="modal" id="personalityModal">
@@ -243,25 +308,38 @@
   <div class="hero-content">
     <div class="kicker">✦ Hermes Agent · 一键部署</div>
     <h1>Hermes Agent<br>一键部署</h1>
-    <p class="sub">点一下 · 跳转到智能体 · 自主学完配好</p>
-    <div class="tagline">👆 不懂代码 · 没时间研究 · 照样用上AI数字员工</div>
+    <p class="sub">点卡片 · 复制命令 · 智能体自动安装</p>
+    <div class="tagline">🔗 全部对接 SkillHub 商店 · 拒绝自主生成 · 每个技能真实可装</div>
     <div class="hero-line"></div>
     <p class="hero-desc">
-      10项核心配置，点击即跳转学习。<br>
-      让智能体自己去看、去学、去完成。
+      10项来自 <strong style="color:var(--gold)">SkillHub 商店</strong> 的核心技能，一键安装。<br>
+      不用猜、不用找、不用自己写代码，点一下复制命令，终端一贴就搞定。
     </p>
-    <a href="#list" class="cta-btn">📋 查看10大配置</a>
+    <a href="#list" class="cta-btn">📋 查看10大技能</a>
   </div>
   <div class="scroll-hint">↓ 向下滚动</div>
 </header>
 
 <section id="list">
   <div class="sec-title">
-    <h2>一键部署清单</h2>
-    <p>点击任意项目 · 跳转到智能体自主学习</p>
+    <h2>10大核心技能</h2>
+    <p>全部来自 SkillHub 商店 · 已验证 · 真实可装</p>
     <div class="gold-line"></div>
   </div>
+  <div class="copy-all-wrap">
+    <button class="btn-copy-all" id="btnCopyAll" onclick="copyAll()">📋 一键复制全部安装命令</button>
+  </div>
   <div class="grid" id="cardGrid"></div>
+
+  <!-- 三步上手 -->
+  <div class="guide">
+    <h3>🚀 三步上手</h3>
+    <div class="guide-steps">
+      <div class="guide-step"><span>①</span> 点击卡片 <em>复制命令</em></div>
+      <div class="guide-step"><span>②</span> 粘贴到 <em>终端 / 智能体</em></div>
+      <div class="guide-step"><span>③</span> 技能自动安装完成 <em>✓</em></div>
+    </div>
+  </div>
 </section>
 
 <!-- 报价方案 -->
@@ -277,8 +355,8 @@
       <div class="pricing-price">免费</div>
       <div class="pricing-desc">体验核心功能，快速上手</div>
       <ul class="pricing-feats">
-        <li>10项基础配置清单</li>
-        <li>AI自主学习触发</li>
+        <li>10项基础技能清单</li>
+        <li>SkillHub安装指引</li>
         <li>社区文档支持</li>
         <li>基础更新</li>
       </ul>
@@ -289,7 +367,7 @@
       <div class="pricing-unit">/年</div>
       <div class="pricing-desc">个人创业者首选 · 性价比之王</div>
       <ul class="pricing-feats">
-        <li>全部10项一键部署包</li>
+        <li>全部10项一键安装包</li>
         <li>Docker沙箱预配置</li>
         <li>Camofox浏览器集成</li>
         <li>售后系统维护支持</li>
@@ -377,44 +455,164 @@
 </script>
 
 <script>
+// ===== 10大技能 — 全部来自 SkillHub 商店，已验证真实可装 =====
 const items = [
-  {n:'01',icon:'🧭',title:'联网自主操作',sub:'AI自己看网页、填表格、做文档',desc:'像真人一样操作电脑，自动联网学习配置。'},
-  {n:'02',icon:'🎭',title:'定义AI分身',sub:'从10+种性格中挑选',desc:'选一个性格，AI就有了自己的行为方式。'},
-  {n:'03',icon:'⚖️',title:'分清任务大小',sub:'大模型做主，小模型跑腿',desc:'贵的干复杂活，便宜的干重复活，成本省大半。'},
-  {n:'04',icon:'🧠',title:'自主记忆系统',sub:'AI自动记住历史对话',desc:'聊过什么AI自己记住，不用你重复说。'},
-  {n:'05',icon:'🌐',title:'联网搜索升级',sub:'不让AI闭卷考试',desc:'给AI装上实时搜索，查资料一步到位。'},
-  {n:'06',icon:'📜',title:'审计自动化',sub:'每步操作都有记录',desc:'AI干了什么全部自动留存，随时可查。'},
-  {n:'07',icon:'🛡️',title:'Docker安全箱',sub:'危险命令自动拦截',desc:'在沙箱里干活，危险操作自动被拦住。'},
-  {n:'08',icon:'👥',title:'三人决策团队',sub:'产品+工程+用户三方辩论',desc:'三个AI角色辩论，给你最优解。'},
-  {n:'09',icon:'🔒',title:'三层备份策略',sub:'数据永不丢失',desc:'本地+云端+版本控制，三重保险。'},
-  {n:'10',icon:'🌱',title:'技能自动进化',sub:'越用越强，越积越值钱',desc:'完成任务自动变成技能，越用越聪明。'},
+  {
+    n:'01', icon:'🧭', title:'联网自主操作',
+    desc:'让AI像真人一样操作电脑——导航、点击、填表、截图。基于Rust的快速无头浏览器自动化CLI。',
+    slug:'agent-browser',
+    longDesc:'基于Rust的快速无头浏览器自动化CLI，支持Node.js回退，允许AI代理通过结构化命令执行页面导航、点击、输入和快照操作。'
+  },
+  {
+    n:'02', icon:'🎭', title:'定义AI分身',
+    desc:'让AI从被动执行变成主动思考、预判需求的智能伙伴。配置专属人格SOUL.md。',
+    slug:'proactive-agent',
+    longDesc:'将AI智能体从任务执行者升级为主动预判需求、持续优化的智能伙伴。集成WAL协议、工作缓冲区、自主定时任务。'
+  },
+  {
+    n:'03', icon:'⚖️', title:'分清任务大小',
+    desc:'大模型干复杂活，小模型跑重复腿。按模型用量和成本智能调度，钱花在刀刃上。',
+    slug:'model-usage',
+    longDesc:'使用CodexBar CLI本地成本功能汇总各模型用量，支持当前模型或全模型明细。脚本化汇总，花最少的钱办最多的事。'
+  },
+  {
+    n:'04', icon:'🧠', title:'自主记忆系统',
+    desc:'AI永不过脑即忘——WAL协议+向量搜索，跨会话记忆，聊过的不用再重复。',
+    slug:'elite-longterm-memory',
+    longDesc:'专为AI打造的终极记忆系统。WAL协议+向量搜索+git-notes+云备份，永不丢失上下文。完美适配vibe-coding。'
+  },
+  {
+    n:'05', icon:'🌐', title:'联网搜索升级',
+    desc:'不让AI闭卷考试。给AI装上实时搜索引擎，查资料、看新闻、做调研一步到位。',
+    slug:'tavily',
+    longDesc:'AI优化的网络搜索API，提供干净的结构化结果、答案生成和原始内容提取。最适合研究、新闻、事实核查。'
+  },
+  {
+    n:'06', icon:'⚡', title:'工作流自动化',
+    desc:'把重复劳动交给机器。设计自动化流程，跨工具联动，触发即执行。',
+    slug:'automation-workflows',
+    longDesc:'设计和实施自动化工作流，帮助节省时间并扩展业务。涵盖自动化识别、工作流设计、工具选择（Zapier/Make/n8n）。'
+  },
+  {
+    n:'07', icon:'🛡️', title:'安全防护门神',
+    desc:'防止提示注入、数据泄露和恶意攻击。给AI装上安全围栏，危险操作自动拦截。',
+    slug:'moltguard',
+    longDesc:'OpenClaw安全守卫，由OpenGuardrails提供。保护你和你的用户免受提示注入、数据泄露和恶意攻击。'
+  },
+  {
+    n:'08', icon:'📦', title:'技能创建系统',
+    desc:'完成任务自动保存为可复用的技能。越用越强，越积越值钱。',
+    slug:'skill-creator',
+    longDesc:'创建有效技能的完整指南。通过专业知识、工作流程或工具集成扩展AI能力，每次成功经验都可沉淀为技能。'
+  },
+  {
+    n:'09', icon:'📝', title:'内容智能摘要',
+    desc:'一键总结网页、PDF、图片、音频、视频。再长再复杂的内容，几秒掌握核心。',
+    slug:'summarize',
+    longDesc:'使用summarize CLI总结URL或文件内容。支持网页、PDF、图片、音频、YouTube视频等多种格式。'
+  },
+  {
+    n:'10', icon:'📚', title:'知识库笔记',
+    desc:'IMA个人笔记服务API。搜索、创建、编辑笔记，个人知识中心，随取随用。',
+    slug:'ima',
+    longDesc:'IMA个人笔记服务API，管理你的知识库和笔记。支持搜索、浏览、新建和追加内容，个人知识随身携带。'
+  }
 ];
 
 const grid = document.getElementById('cardGrid');
-items.forEach((item, idx) => {
-  const card = document.createElement('a');
+
+function buildCmd(slug) {
+  return `请先检查 SkillHub 是否已安装。若未安装，请先参考 SkillHub 文档安装 CLI。若已安装，则执行：skillhub install ${slug}`;
+}
+
+function copyToClipboard(text, cardEl) {
+  navigator.clipboard.writeText(text).then(() => {
+    const title = cardEl ? cardEl.querySelector('h3')?.textContent?.trim() || '命令' : '命令';
+    showToast(`✅ 已复制「${title}」`);
+    const btn = cardEl?.querySelector('.copy-btn');
+    if (btn) {
+      btn.textContent = '✅ 已复制';
+      btn.classList.add('done');
+      setTimeout(() => {
+        btn.textContent = '复制';
+        btn.classList.remove('done');
+      }, 2000);
+    }
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('✅ 已复制');
+  });
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+function copyAll() {
+  const allCmds = items.map(item => `skillhub install ${item.slug}`).join('\n');
+  navigator.clipboard.writeText(allCmds).then(() => {
+    showToast('✅ 全部10个安装命令已复制！');
+    const btn = document.getElementById('btnCopyAll');
+    btn.textContent = '✅ 已复制全部！';
+    btn.classList.add('done');
+    setTimeout(() => {
+      btn.textContent = '📋 一键复制全部安装命令';
+      btn.classList.remove('done');
+    }, 2500);
+  });
+}
+
+items.forEach((item) => {
+  const card = document.createElement('div');
   card.className = 'card';
-  // 用 小优 的指令作为跳转目标 —— 让智能体去学习
-  card.href = `#learn-${item.n}`;
+  
+  const cmdText = `skillhub install ${item.slug}`;
+  
   card.innerHTML = `
-    <div class="card-num">${item.n}</div>
-    <h3><span class="icon">${item.icon}</span> ${item.title}</h3>
-    <p class="sub-label">${item.sub}</p>
-    <p>${item.desc}</p>
-    <span class="action-hint">🤖 让智能体去学 →</span>
+    <div class="card-top">
+      <div class="card-num">${item.n}</div>
+      <div class="card-info">
+        <h3><span class="icon">${item.icon}</span> ${item.title}</h3>
+        <div class="slug-badge">
+          <span class="tag">📦</span> ${item.slug}
+        </div>
+        <div class="desc">${item.desc}</div>
+      </div>
+    </div>
+    <div class="install-line">
+      <span class="cmd-text">${cmdText}</span>
+      <button class="copy-btn">复制</button>
+    </div>
   `;
+
+  // 点击卡片 -> 复制完整安装指令
   card.addEventListener('click', (e) => {
-    e.preventDefault();
     // 第2项：弹出性格选择弹窗
     if (item.n === '02') {
       document.getElementById('personalityModal').classList.add('show');
       return;
     }
-    // 其他项：跳转到学习页
-    const cmd = encodeURIComponent(`请帮我完成 Hermes Agent 配置第${item.n}项：「${item.title}」- ${item.sub}。自主学习并完成配置。`);
-    const agentUrl = `./learn.html?task=${item.n}&title=${encodeURIComponent(item.title)}&cmd=${cmd}`;
-    window.location.href = agentUrl;
+    if (e.target.classList.contains('copy-btn')) return;
+    const fullCmd = buildCmd(item.slug);
+    copyToClipboard(fullCmd, card);
   });
+
+  // 复制按钮
+  card.querySelector('.copy-btn').addEventListener('click', function(e) {
+    e.stopPropagation();
+    const fullCmd = buildCmd(item.slug);
+    copyToClipboard(fullCmd, card);
+  });
+
   grid.appendChild(card);
 });
 
@@ -432,9 +630,9 @@ function confirmTraits() {
   if (selectedTraits.length === 0) return;
   closeModal();
   const traits = selectedTraits.join('、');
-  const cmd = encodeURIComponent(`请帮我完成 Hermes Agent 配置第02项「定义AI分身」：我的AI需要以下性格特质：${traits}。请根据这些性格生成专属 SOUL.md 人格文件并完成配置。`);
-  const agentUrl = `./learn.html?task=02&title=${encodeURIComponent('定义AI分身 - ' + traits)}&cmd=${cmd}`;
-  window.location.href = agentUrl;
+  const cmd = `选择AI性格：${traits}。请安装 SkillHub 技能 proactive-agent，然后根据所选性格生成专属 SOUL.md 人格文件。\n技能安装命令：skillhub install proactive-agent`;
+  copyToClipboard(cmd, document.querySelector('.card'));
+  showToast('✅ 已复制性格配置指令');
 }
 function closeModal() {
   document.getElementById('personalityModal').classList.remove('show');
