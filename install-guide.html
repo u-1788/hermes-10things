@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hermes Agent 安装教程</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #f5f7fa;
+      color: #1a1a2e;
+      line-height: 1.7;
+    }
+
+    /* Hero */
+    .hero{
+      background: linear-gradient(135deg, #0a2a5e 0%, #060e1e 100%);
+      padding: 60px 20px 50px;
+      text-align: center;
+      color: #fff;
+    }
+    .hero h1{
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #fff, #ffd54f);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero .sub{
+      margin-top: 12px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      letter-spacing: 4px;
+    }
+    .hero .badge{
+      display: inline-block;
+      margin-top: 16px;
+      padding: 6px 18px;
+      border-radius: 20px;
+      background: rgba(255,213,79,0.12);
+      border: 1px solid rgba(255,213,79,0.2);
+      font-size: 12px;
+      color: #ffd54f;
+    }
+    .hero .gold-line{
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #ffd54f, transparent);
+      margin: 18px auto 0;
+    }
+
+    /* Container */
+    .container{max-width: 720px;margin: 0 auto;padding: 0 16px;}
+
+    /* Version tabs */
+    .version-tabs{
+      display: flex;
+      gap: 0;
+      margin: 30px auto 0;
+      max-width: 600px;
+      background: #e8ecf1;
+      border-radius: 12px;
+      padding: 4px;
+    }
+    .version-tab{
+      flex: 1;
+      text-align: center;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+      background: transparent;
+      color: #666;
+    }
+    .version-tab.active{
+      background: #fff;
+      color: #0a2a5e;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .version-tab .icon{font-size: 20px;display: block;margin-bottom: 4px;}
+
+    /* Content sections */
+    .content{display: none;padding: 4px 0 40px;}
+    .content.active{display: block;}
+
+    /* Section header */
+    .sec-header{
+      position: sticky;
+      top: 0;
+      background: #f5f7fa;
+      padding: 20px 0 14px;
+      z-index: 10;
+    }
+    .sec-header h2{
+      font-size: 20px;
+      color: #0a2a5e;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sec-header .count{
+      font-size: 12px;
+      color: #999;
+      font-weight: 400;
+      margin-left: 8px;
+    }
+
+    /* Step cards */
+    .step-card{
+      background: #fff;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      border: 1px solid #eef0f4;
+      transition: all 0.2s;
+    }
+    .step-card:hover{
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      border-color: #d0d5dd;
+    }
+    .step-card .step-num{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #0a2a5e;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .step-card h3{
+      font-size: 17px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 10px;
+    }
+    .step-card ul{
+      list-style: none;
+      padding: 0;
+    }
+    .step-card li{
+      padding: 5px 0;
+      font-size: 14px;
+      color: #444;
+      position: relative;
+      padding-left: 18px;
+    }
+    .step-card li::before{
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #ffd54f;
+      font-weight: 700;
+    }
+    .step-card li strong{
+      color: #0a2a5e;
+    }
+    .step-card .link-box{
+      display: inline-block;
+      margin-top: 8px;
+      padding: 8px 14px;
+      background: #f0f4ff;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: 'SF Mono', 'Consolas', monospace;
+      color: #2563eb;
+      word-break: break-all;
+    }
+    .step-card .link-box a{
+      color: #2563eb;
+      text-decoration: none;
+    }
+    .step-card .link-box a:hover{text-decoration: underline;}
+    .step-card .tag{
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-right: 6px;
+    }
+    .tag-blue{background: #e8f0fe;color: #1a73e8;}
+    .tag-green{background: #e6f7e6;color: #1b7a1b;}
+    .tag-orange{background: #fef3e0;color: #e37400;}
+    .step-card .cmd-block{
+      margin-top: 10px;
+      padding: 10px 14px;
+      background: #1a1a2e;
+      border-radius: 8px;
+      font-family: 'SF Mono', 'Consolas', monospace;
+      font-size: 13px;
+      color: #a8e6cf;
+      overflow-x: auto;
+    }
+    .step-card .success{
+      display: inline-block;
+      margin-top: 8px;
+      padding: 4px 12px;
+      background: #e6f7e6;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #1b7a1b;
+    }
+
+    /* Divider */
+    .divider{
+      text-align: center;
+      padding: 30px 0;
+      color: #ccc;
+      font-size: 13px;
+      letter-spacing: 6px;
+    }
+
+    /* Footer */
+    .footer{
+      text-align: center;
+      padding: 30px 20px;
+      color: #999;
+      font-size: 12px;
+      border-top: 1px solid #eee;
+    }
+
+    /* Free badge */
+    .free-badge{
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 6px;
+      background: #e6f7e6;
+      color: #1b7a1b;
+      font-size: 11px;
+      font-weight: 700;
+      margin-left: 8px;
+    }
+    .paid-badge{
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 6px;
+      background: #fef3e0;
+      color: #e37400;
+      font-size: 11px;
+      font-weight: 700;
+      margin-left: 8px;
+    }
+
+    @media(max-width: 500px){
+      .hero h1{font-size: 24px;}
+      .step-card{padding: 16px;}
+      .step-card li{font-size: 13px;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="badge">📦 AI 智能体 · 零门槛部署</div>
+  <h1>Hermes Agent 安装教程</h1>
+  <p class="sub">免费版 · 付费版 ｜ 两步扫码 · 三步配模型 · 四步用上AI</p>
+  <div class="gold-line"></div>
+</div>
+
+<div class="container">
+
+  <!-- Version Tabs -->
+  <div class="version-tabs">
+    <button class="version-tab active" onclick="switchVersion('free')">
+      <span class="icon">🆓</span>
+      免费版
+    </button>
+    <button class="version-tab" onclick="switchVersion('paid')">
+      <span class="icon">💎</span>
+      付费版
+    </button>
+  </div>
+
+  <!-- ====== 免费版 ====== -->
+  <div class="content active" id="free">
+
+    <div class="sec-header">
+      <h2>🆓 免费版流程 <span class="count">共 4 步</span></h2>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <h3>领取免费的 Hermes Agent 智能体</h3>
+      <ul>
+        <li>打开页面：<span class="link-box"><a href="https://lightvela.tencent.com/" target="_blank">lightvela.tencent.com</a></span></li>
+        <li><strong>微信扫码登录</strong></li>
+      </ul>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <h3>注册 DeepSeek 并创建 API Key</h3>
+      <ul>
+        <li>打开页面：<span class="link-box"><a href="https://platform.deepseek.com/usage" target="_blank">platform.deepseek.com/usage</a></span></li>
+        <li><strong>微信扫码</strong>，跳转注册登录</li>
+        <li>点击 <strong>API keys</strong> 创建</li>
+        <li>输入 <span class="cmd-block" style="display:inline;padding:3px 10px;margin:0;font-size:12px;">stream sk</span>，回车</li>
+        <li>将创建的 <strong>API Key 秘钥</strong> 复制保存下来</li>
+      </ul>
+      <span class="tag tag-blue">💡 秘钥要保存好，后续要用</span>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <h3>配置模型</h3>
+      <ul>
+        <li>回到页面：<span class="link-box"><a href="https://lightvela.tencent.com/" target="_blank">lightvela.tencent.com</a></span></li>
+        <li>点击 <strong>模型 API</strong></li>
+        <li>找到 <strong>模型服务商</strong></li>
+        <li>选择 <strong>深度求索（DeepSeek）</strong></li>
+        <li>模型选择：<strong>DeepSeek V4 Flash</strong></li>
+        <li><strong>API Key</strong> 下粘贴复制的秘钥</li>
+        <li>点击 <strong>添加为默认</strong></li>
+      </ul>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <h3>接入微信</h3>
+      <ul>
+        <li>通道选择 <strong>微信链接</strong></li>
+        <li><strong>扫码</strong>即可完成安装</li>
+      </ul>
+      <span class="success">✅ Hermes Agent 安装完成！</span>
+    </div>
+
+    <div class="divider">━ ━ ━ ━ ━</div>
+  </div>
+
+  <!-- ====== 付费版 ====== -->
+  <div class="content" id="paid">
+
+    <div class="sec-header">
+      <h2>💎 付费版申请流程 <span class="count">共 4 步</span></h2>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="step-card">
+      <div class="step-num" style="background:#e37400;">1</div>
+      <h3>购买腾讯云服务器</h3>
+      <ul>
+        <li>电脑端打开腾讯云：<span class="link-box"><a href="https://yun.qq.com" target="_blank">yun.qq.com</a></span></li>
+        <li><strong>微信扫码</strong>完成登录注册</li>
+        <li>点击 <strong>控制台</strong></li>
+        <li>搜索 <strong>轻量应用服务器</strong></li>
+      </ul>
+      <br>
+      <div style="background:#f8f9fb;border-radius:10px;padding:14px;font-size:13px;">
+        <div style="font-weight:700;color:#0a2a5e;margin-bottom:8px;">📋 购买配置建议</div>
+        <table style="width:100%;border-collapse:collapse;">
+          <tr><td style="padding:4px 0;color:#666;">地域</td><td style="padding:4px 0;font-weight:600;">广州</td></tr>
+          <tr><td style="padding:4px 0;color:#666;">镜像</td><td style="padding:4px 0;font-weight:600;">Hermes Agent v0.12.0（v2026.4.30）</td></tr>
+          <tr><td style="padding:4px 0;color:#666;">套餐</td><td style="padding:4px 0;font-weight:600;">入门型</td></tr>
+          <tr><td style="padding:4px 0;color:#666;">时长</td><td style="padding:4px 0;font-weight:600;">一个月（建议）</td></tr>
+        </table>
+      </div>
+      <span class="success" style="margin-top:10px;">✅ 完成支付后，得到属于自己的服务器</span>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step-card">
+      <div class="step-num" style="background:#e37400;">2</div>
+      <h3>注册 DeepSeek 并创建 API Key</h3>
+      <ul>
+        <li>打开页面：<span class="link-box"><a href="https://platform.deepseek.com/usage" target="_blank">platform.deepseek.com/usage</a></span></li>
+        <li>注册登录</li>
+        <li>点击 <strong>API keys</strong> 创建</li>
+        <li>输入 <span class="cmd-block" style="display:inline;padding:3px 10px;margin:0;font-size:12px;">stream sk</span>，回车</li>
+        <li>将创建的 <strong>API Key 秘钥</strong> 复制保存下来</li>
+      </ul>
+      <span class="tag tag-blue">💡 免费版已注册过的可跳过此步</span>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step-card">
+      <div class="step-num" style="background:#e37400;">3</div>
+      <h3>登录服务器</h3>
+      <ul>
+        <li>回到腾讯云：<span class="link-box"><a href="https://yun.qq.com" target="_blank">yun.qq.com</a></span></li>
+        <li>点击 <strong>控制台</strong></li>
+        <li>进入 <strong>轻量应用服务器</strong>（直接搜索"轻量应用服务器"）</li>
+        <li>点击 <strong>直接登录</strong></li>
+      </ul>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step-card">
+      <div class="step-num" style="background:#e37400;">4</div>
+      <h3>接入微信</h3>
+      <ul>
+        <li>在终端输入：</li>
+      </ul>
+      <div class="cmd-block">hermes gateway setup</div>
+      <ul>
+        <li style="margin-top:8px;">等待跳转后输入 <strong>14</strong>（个人微信）或 <strong>12</strong>（企业微信）</li>
+        <li><strong>扫码授权</strong></li>
+      </ul>
+      <span class="success">✅ 成功后即可在微信中直接对话！</span>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>Generated by 小优 · Hermes Agent</p>
+</div>
+
+<script>
+function switchVersion(v){
+  document.querySelectorAll('.content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.version-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById(v).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+</script>
+</body>
+</html>
