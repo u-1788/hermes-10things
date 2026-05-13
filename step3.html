@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>配置 DeepSeek 模型</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#070b17;color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;-webkit-tap-highlight-color:transparent}
+.card{width:100%;max-width:420px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px 20px}
+.card h1{font-size:22px;font-weight:800;text-align:center;margin-bottom:4px}
+.card h1 span{color:#ffd54f}
+.card .sub{text-align:center;font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:20px}
+.input-group{margin-bottom:14px}
+.input-group label{display:block;font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:6px}
+.input-group input{width:100%;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#fff;font-size:14px;font-family:inherit;outline:none;transition:border 0.2s}
+.input-group input:focus{border-color:rgba(255,213,79,0.3)}
+.input-group input::placeholder{color:rgba(255,255,255,0.15)}
+.btn{display:block;width:100%;padding:14px;border-radius:12px;font-size:15px;font-weight:700;text-align:center;border:none;cursor:pointer;font-family:inherit;transition:all 0.15s;margin-bottom:8px}
+.btn:active{transform:scale(0.97)}
+.btn-gold{background:linear-gradient(135deg,#ffd54f,#ffb300);color:#0a0a12;box-shadow:0 3px 12px rgba(255,213,79,0.2)}
+.btn-copy{background:rgba(255,213,79,0.1);border:1px solid rgba(255,213,79,0.15);color:#ffd54f}
+.cmd-box{display:none;margin-top:12px;padding:14px;border-radius:10px;background:#0a0a12;border:1px solid rgba(255,255,255,0.05)}
+.cmd-box.show{display:block}
+.cmd-box pre{font-family:'SF Mono','Consolas',monospace;font-size:13px;color:#a8e6cf;line-height:1.7;white-space:pre-wrap;word-break:break-all;margin-bottom:10px}
+.cmd-box .tip{font-size:11px;color:rgba(255,255,255,0.3);text-align:center;font-family:inherit}
+.status{display:none;font-size:12px;padding:8px 12px;border-radius:8px;margin-bottom:10px;text-align:center}
+.status.ok{display:block;background:rgba(102,187,106,0.08);border:1px solid rgba(102,187,106,0.12);color:#66bb6a}
+.status.err{display:block;background:rgba(255,167,38,0.08);border:1px solid rgba(255,167,38,0.12);color:#ffa726}
+.toast{display:none;position:fixed;bottom:60px;left:50%;transform:translateX(-50%);padding:10px 24px;border-radius:30px;background:#ffd54f;color:#0a0a12;font-size:13px;font-weight:700;z-index:999;box-shadow:0 4px 20px rgba(255,213,79,0.3);animation:pop 0.2s;white-space:nowrap}
+.toast.show{display:block}
+@keyframes pop{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast">✅ 已复制！到终端粘贴执行</div>
+
+<div class="card">
+  <h1><span>③</span> 配置 DeepSeek</h1>
+  <p class="sub">填入 API Key · 复制命令 · 终端粘贴</p>
+
+  <div class="input-group">
+    <label>DeepSeek API Key</label>
+    <input type="text" id="apiKey" placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" oninput="genCmd()" autocomplete="off">
+  </div>
+
+  <div class="status" id="status"></div>
+
+  <div class="cmd-box" id="cmdBox">
+    <pre id="cmdText"></pre>
+    <button class="btn btn-copy" onclick="copyIt()">📋 复制命令</button>
+    <div class="tip">粘贴到服务器终端 → 回车执行</div>
+  </div>
+</div>
+
+<script>
+function genCmd(){
+  var key=document.getElementById('apiKey').value.trim()
+  var box=document.getElementById('cmdBox')
+  var st=document.getElementById('status')
+  if(!key){box.classList.remove('show');st.className='status';return}
+  if(!key.startsWith('sk-')){
+    st.className='status err';st.textContent='⚠️ API Key 应以 sk- 开头'
+    box.classList.remove('show');return
+  }
+  st.className='status ok';st.textContent='✅ 格式正确，点下方按钮复制'
+  var cmd='hermes config set model.provider custom\n'
+    + 'hermes config set model.base_url https://api.deepseek.com/v1\n'
+    + 'hermes config set model.default deepseek-v4-flash\n'
+    + 'hermes config set model.api_key ' + key + '\n'
+    + 'echo "✅ DeepSeek 配置完成！"'
+  document.getElementById('cmdText').textContent=cmd
+  box.classList.add('show')
+}
+
+function copyIt(){
+  var t=document.getElementById('cmdText').textContent
+  navigator.clipboard.writeText(t).then(function(){show()}).catch(function(){
+    var ta=document.createElement('textarea');ta.value=t
+    document.body.appendChild(ta);ta.select();document.execCommand('copy')
+    document.body.removeChild(ta);show()
+  })
+}
+
+function show(){
+  var t=document.getElementById('toast');t.classList.add('show')
+  setTimeout(function(){t.classList.remove('show')},2500)
+}
+</script>
+</body>
+</html>
