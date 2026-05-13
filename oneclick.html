@@ -6,219 +6,238 @@
 <title>Hermes Agent 一键部署</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#060e1e;color:#fff;min-height:100vh}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#070b17;color:#fff;min-height:100vh;-webkit-tap-highlight-color:transparent}
 
-.hero{min-height:75vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 20px;background:linear-gradient(135deg,#0a2a5e 0%,#060e1e 50%,#0a1a3e 100%);position:relative;overflow:hidden}
-.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(transparent,#060e1e)}
-.badge{display:inline-block;padding:6px 16px;border-radius:20px;background:rgba(255,213,79,0.1);border:1px solid rgba(255,213,79,0.2);font-size:11px;color:#ffd54f;letter-spacing:4px;margin-bottom:16px}
-.hero h1{font-size:36px;font-weight:800;background:linear-gradient(135deg,#fff 0%,#ffd54f 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.3;margin-bottom:12px}
-.hero .sub{font-size:16px;color:rgba(255,255,255,0.5);letter-spacing:2px;margin-bottom:24px}
-.hero .steps-badge{display:flex;gap:8px;margin-bottom:28px;flex-wrap:wrap;justify-content:center}
-.hero .steps-badge span{padding:5px 12px;border-radius:6px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);font-size:11px;color:rgba(255,255,255,0.4)}
+/* Header */
+.header{padding:40px 18px 20px;text-align:center;background:linear-gradient(180deg,#0a1a3a 0%,#070b17 100%)}
+.header .badge{display:inline-block;padding:4px 14px;border-radius:20px;background:rgba(255,213,79,0.08);border:1px solid rgba(255,213,79,0.15);font-size:10px;color:#ffd54f;letter-spacing:3px;margin-bottom:12px}
+.header h1{font-size:28px;font-weight:800;background:linear-gradient(135deg,#fff 0%,#ffd54f 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.3;margin-bottom:6px}
+.header p{font-size:13px;color:rgba(255,255,255,0.35);letter-spacing:1px}
 
-.cta-btn{display:inline-flex;align-items:center;gap:8px;padding:16px 40px;border-radius:30px;background:linear-gradient(135deg,#ffd54f,#ffb300);color:#0a0a12;font-size:17px;font-weight:700;text-decoration:none;box-shadow:0 4px 24px rgba(255,213,79,0.3);transition:all 0.3s;justify-content:center}
-.cta-btn:hover{transform:translateY(-2px);box-shadow:0 6px 30px rgba(255,213,79,0.4)}
+/* Steps */
+.steps-wrap{padding:16px 14px 40px;max-width:500px;margin:0 auto}
 
-.flow-section{padding:30px 14px;max-width:600px;margin:0 auto}
+/* Step card - big button style */
+.step-card{display:block;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:0;margin-bottom:6px;overflow:hidden;transition:all 0.15s;text-decoration:none;color:inherit}
+.step-card:active{background:rgba(255,213,79,0.05);border-color:rgba(255,213,79,0.12)}
+.step-card.done{opacity:0.6}
+.step-card.done .step-head .check{display:inline-block}
 
-.section-title{text-align:center;font-size:18px;font-weight:800;color:#ffd54f;margin-bottom:6px}
-.section-sub{text-align:center;font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:18px}
+.step-head{display:flex;align-items:center;padding:14px;gap:10px}
+.step-head .num{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0}
+.step-head .num.s1{background:rgba(100,181,246,0.15);color:#64b5f6}
+.step-head .num.s2{background:rgba(255,167,38,0.15);color:#ffa726}
+.step-head .num.s3{background:rgba(186,104,200,0.15);color:#ce93d8}
+.step-head .num.s4{background:rgba(102,187,106,0.15);color:#66bb6a}
+.step-head .info{flex:1;min-width:0}
+.step-head .info .title{font-size:15px;font-weight:700;margin-bottom:2px}
+.step-head .info .desc{font-size:12px;color:rgba(255,255,255,0.4)}
+.step-head .action{flex-shrink:0;padding:8px 16px;border-radius:10px;background:rgba(255,213,79,0.1);border:1px solid rgba(255,213,79,0.15);color:#ffd54f;font-size:13px;font-weight:700}
+.step-head .action:active{background:rgba(255,213,79,0.2)}
+.step-head .check{display:none;font-size:18px;color:#66bb6a;flex-shrink:0}
 
-.step-card{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:12px;margin-bottom:8px;text-decoration:none;color:inherit;transition:all 0.2s}
-.step-card:active{background:rgba(255,213,79,0.06);border-color:rgba(255,213,79,0.15)}
-.step-card .step-left{flex:1;min-width:0}
-.step-card .step-title{font-size:13px;font-weight:700;margin-bottom:2px}
-.step-card .step-title .tag{display:inline-block;width:20px;height:20px;border-radius:50%;text-align:center;line-height:20px;font-size:10px;font-weight:800;margin-right:6px}
-.step-card .step-title .tag.s1{background:rgba(100,181,246,0.15);color:#64b5f6}
-.step-card .step-title .tag.s2{background:rgba(255,167,38,0.15);color:#ffa726}
-.step-card .step-title .tag.s3{background:rgba(186,104,200,0.15);color:#ce93d8}
-.step-card .step-title .tag.s4{background:rgba(102,187,106,0.15);color:#66bb6a}
-.step-card .step-desc{font-size:11px;color:rgba(255,255,255,0.45)}
-.step-card .step-url{font-size:10px;color:rgba(255,213,79,0.3);margin-top:2px;word-break:break-all}
-.step-card .qr-wrap{width:64px;height:64px;flex-shrink:0;border-radius:8px;overflow:hidden;background:#fff;padding:3px;display:flex;align-items:center;justify-content:center}
-.step-card .qr-wrap img{width:100%;height:100%;display:block}
-.step-card .qr-placeholder{width:64px;height:64px;flex-shrink:0;border-radius:8px;background:rgba(255,255,255,0.04);border:1px dashed rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(255,255,255,0.25);text-align:center;line-height:1.3}
+/* Command block inside card */
+.cmd-box{display:none;padding:6px 14px 14px}
+.cmd-box.show{display:block}
+.cmd-box .cmd{background:#0a0a12;border-radius:10px;padding:12px 14px;font-family:'SF Mono','Consolas',monospace;font-size:14px;color:#a8e6cf;position:relative;line-height:1.5;word-break:break-all}
+.cmd-box .cmd .hint{display:block;font-size:11px;color:rgba(255,255,255,0.3);font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;margin-top:6px;border-top:1px solid rgba(255,255,255,0.04);padding-top:6px}
 
-.step-arrow{text-align:center;padding:1px 0;color:rgba(255,255,255,0.12);font-size:10px}
+/* Arrow */
+.arrow{text-align:center;padding:0;color:rgba(255,255,255,0.08);font-size:10px;line-height:1}
 
-.step-card-static{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:12px;margin-bottom:8px;color:inherit;cursor:pointer;transition:all 0.2s}
-.step-card-static:active{background:rgba(255,213,79,0.06);border-color:rgba(255,213,79,0.15)}
-.step-card-static .step-left{flex:1;min-width:0}
-.step-card-static .step-title{font-size:13px;font-weight:700;margin-bottom:2px}
-.step-card-static .step-title .tag{display:inline-block;width:20px;height:20px;border-radius:50%;text-align:center;line-height:20px;font-size:10px;font-weight:800;margin-right:6px}
-.step-card-static .step-title .tag.s1{background:rgba(100,181,246,0.15);color:#64b5f6}
-.step-card-static .step-title .tag.s2{background:rgba(255,167,38,0.15);color:#ffa726}
-.step-card-static .step-title .tag.s3{background:rgba(186,104,200,0.15);color:#ce93d8}
-.step-card-static .step-title .tag.s4{background:rgba(102,187,106,0.15);color:#66bb6a}
-.step-card-static .step-desc{font-size:11px;color:rgba(255,255,255,0.45)}
-.step-card-static .qr-placeholder{width:64px;height:64px;flex-shrink:0;border-radius:8px;background:rgba(255,255,255,0.04);border:1px dashed rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(255,255,255,0.25);text-align:center;line-height:1.3}
+/* Detail section */
+.detail-box{display:none;padding:0 14px 14px}
+.detail-box.show{display:block}
+.detail-box .tip{padding:10px 12px;background:rgba(100,181,246,0.06);border:1px solid rgba(100,181,246,0.1);border-radius:10px;font-size:12px;color:rgba(255,255,255,0.6);line-height:1.8}
+.detail-box .tip strong{color:#fff}
+.detail-box .tip .code-inline{display:inline-block;padding:1px 6px;border-radius:4px;background:rgba(255,255,255,0.06);font-family:'SF Mono','Consolas',monospace;font-size:11px;color:#a8e6cf}
 
-.complete-badge{text-align:center;padding:10px;margin-top:6px;border-radius:10px;background:rgba(102,187,106,0.1);border:1px solid rgba(102,187,106,0.15)}
-.complete-badge span{color:#66bb6a;font-weight:700;font-size:13px}
+/* Complete */
+.complete{margin-top:10px;text-align:center;padding:12px;border-radius:12px;background:rgba(102,187,106,0.08);border:1px solid rgba(102,187,106,0.12)}
+.complete span{color:#66bb6a;font-weight:700;font-size:14px}
 
-.detail-panel{display:none;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:14px;margin-top:4px;animation:fadeIn 0.2s}
-.detail-panel.active{display:block}
-.detail-panel p{font-size:12px;color:rgba(255,255,255,0.6);line-height:1.6}
-.detail-panel .code{display:block;background:#0a0a12;border-radius:8px;padding:10px 12px;font-family:'SF Mono','Consolas',monospace;font-size:12px;color:#a8e6cf;margin:8px 0;position:relative}
-.detail-panel .code .copy-btn{position:absolute;top:6px;right:6px;padding:3px 8px;border-radius:4px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.4);font-size:9px;cursor:pointer;font-family:inherit}
-.detail-panel .code .copy-btn:active{background:rgba(255,213,79,0.15);color:#ffd54f}
+/* Copy toast */
+.toast{display:none;position:fixed;bottom:120px;left:50%;transform:translateX(-50%);padding:10px 24px;border-radius:30px;background:#ffd54f;color:#0a0a12;font-size:14px;font-weight:700;z-index:999;box-shadow:0 4px 20px rgba(255,213,79,0.3);animation:popIn 0.2s}
+.toast.show{display:block}
+@keyframes popIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 
-.config-box{margin:12px 0;padding:12px;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06)}
-.config-box .row{display:flex;justify-content:space-between;padding:5px 0;font-size:11px;border-bottom:1px solid rgba(255,255,255,0.04)}
-.config-box .row:last-child{border-bottom:none}
-.config-box .row .l{color:rgba(255,255,255,0.4)}
-.config-box .row .v{color:rgba(255,255,255,0.7)}
+/* Footer */
+.footer{text-align:center;padding:20px 16px;color:rgba(255,255,255,0.15);font-size:10px}
+.footer a{color:rgba(255,213,79,0.3);text-decoration:none}
 
-.footer{text-align:center;padding:30px 16px;border-top:1px solid rgba(255,255,255,0.04);color:rgba(255,255,255,0.2);font-size:11px}
-.footer a{color:rgba(255,213,79,0.4);text-decoration:none}
-
-.scan-hint{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:4px;background:rgba(100,181,246,0.08);font-size:9px;color:#64b5f6;margin-top:2px}
-.scan-hint span{font-size:10px}
-
-@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-
-@media(max-width:400px){
-  .hero h1{font-size:28px}
-  .cta-btn{padding:14px 28px;font-size:15px}
-  .step-card .qr-wrap{width:56px;height:56px}
-  .step-card-static .qr-placeholder{width:56px;height:56px}
+@media(max-width:380px){
+  .header h1{font-size:24px}
+  .step-head .action{padding:6px 12px;font-size:12px}
 }
 </style>
 </head>
 <body>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="badge">✦ AI 智能体 · 零门槛部署</div>
-  <h1>Hermes Agent<br>一键部署</h1>
-  <p class="sub">微信内长按二维码 · 扫码直达 · 四步配好</p>
-  <div class="steps-badge">
-    <span>☁️ 购买服务器</span>
-    <span>🔑 注册 DeepSeek</span>
-    <span>⚙️ 配置模型</span>
-    <span>💬 接入微信</span>
-  </div>
-  <a class="cta-btn" href="#flow-section">📲 开始部署 · 四步搞定</a>
+<div class="toast" id="toast">✅ 已复制！切到终端粘贴</div>
+
+<div class="header">
+  <div class="badge">✦ 零门槛部署</div>
+  <h1>Hermes Agent</h1>
+  <p>点一下复制命令 · 终端粘贴即用</p>
 </div>
 
-<!-- FLOW -->
-<div class="flow-section" id="flow-section">
+<div class="steps-wrap">
 
-  <div class="section-title">操作步骤</div>
-  <div class="section-sub">点击步骤或长按二维码扫码操作</div>
-
-  <!-- Step ① -->
-  <a class="step-card" href="https://buy.cloud.tencent.com/lighthouse" target="_blank">
-    <div class="step-left">
-      <div class="step-title"><span class="tag s1">①</span>购买腾讯云服务器</div>
-      <div class="step-desc">轻量应用服务器 · 广州 · 2核4G</div>
-      <div class="step-url">buy.cloud.tencent.com/lighthouse</div>
-      <div class="scan-hint"><span>📷</span> 长按扫码</div>
+  <!-- ============ STEP 0: 前提 ============ -->
+  <div class="step-card" onclick="expand(this,'pre-check')">
+    <div class="step-head">
+      <div class="num s1">⓪</div>
+      <div class="info">
+        <div class="title">前提准备</div>
+        <div class="desc">确认已买好服务器 · 准备好 DeepSeek API Key</div>
+      </div>
+      <div class="action" onclick="event.stopPropagation();copyAndToast('准备 DeepSeek API Key\n\n先去 platform.deepseek.com 注册登录\n点击「创建 API Key」→ 复制保存')">查看</div>
     </div>
-    <div class="qr-wrap">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://buy.cloud.tencent.com/lighthouse" alt="QR" loading="lazy">
-    </div>
-  </a>
-
-  <div class="step-arrow">▼</div>
-
-  <!-- Step ② -->
-  <a class="step-card" href="https://platform.deepseek.com/" target="_blank">
-    <div class="step-left">
-      <div class="step-title"><span class="tag s2">②</span>注册 DeepSeek</div>
-      <div class="step-desc">注册登录 · 创建 API Key 并保存</div>
-      <div class="step-url">platform.deepseek.com</div>
-      <div class="scan-hint"><span>📷</span> 长按扫码</div>
-    </div>
-    <div class="qr-wrap">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://platform.deepseek.com/" alt="QR" loading="lazy">
-    </div>
-  </a>
-
-  <div class="step-arrow">▼</div>
-
-  <!-- Step ③ -->
-  <div class="step-card-static" onclick="toggleDetail('detail-3')">
-    <div class="step-left">
-      <div class="step-title"><span class="tag s3">③</span>登录服务器 + 配置模型</div>
-      <div class="step-desc">免密登录 · 配置 DeepSeek V4 Flash</div>
-    </div>
-    <div class="qr-placeholder">💻<br>终端操作</div>
-  </div>
-
-  <div class="detail-panel" id="detail-3">
-    <p><strong>登录服务器：</strong></p>
-    <p>腾讯云控制台 → 轻量应用服务器 → 点击「登录」→「免密登录」</p>
-    <p style="margin-top:8px"><strong>配置模型：</strong></p>
-    <div class="code">
-hermes setup model
-      <button class="copy-btn" onclick="copyCmd('hermes setup model',this)">复制</button>
-    </div>
-    <p>① 输入 <strong>16</strong> → ② 粘贴 API Key → ③ 选 deepseek-v4-flash → ④ N → ⑤ Ctrl+Z</p>
-
-    <p style="margin-top:8px"><strong>推荐配置：</strong></p>
-    <div class="config-box">
-      <div class="row"><span class="l">地域</span><span class="v">广州</span></div>
-      <div class="row"><span class="l">镜像</span><span class="v">Hermes Agent v0.12.0</span></div>
-      <div class="row"><span class="l">套餐</span><span class="v">入门型（2核4G）</span></div>
-      <div class="row"><span class="l">时长</span><span class="v">1 个月</span></div>
+    <div class="detail-box" id="pre-check">
+      <div class="tip">
+        ✅ 已购买腾讯云轻量服务器（广州 · 2核4G）<br>
+        ✅ 已注册 DeepSeek 并保存了 API Key<br><br>
+        如果没做，先扫码👇<br>
+        <span class="code-inline">买服务器 → buy.cloud.tencent.com/lighthouse</span><br>
+        <span class="code-inline">注册 DeepSeek → platform.deepseek.com</span>
+      </div>
     </div>
   </div>
 
-  <div class="step-arrow">▼</div>
+  <div class="arrow">▼</div>
 
-  <!-- Step ④ -->
-  <div class="step-card-static" onclick="toggleDetail('detail-4')">
-    <div class="step-left">
-      <div class="step-title"><span class="tag s4">④</span>接入微信 · 扫码对话</div>
-      <div class="step-desc">运行命令生成二维码，微信扫码授权</div>
+  <!-- ============ STEP 1: 安装 ============ -->
+  <div class="step-card" onclick="expand(this,'cmd-1')">
+    <div class="step-head">
+      <div class="num s1">①</div>
+      <div class="info">
+        <div class="title">安装 Hermes Agent</div>
+        <div class="desc">在服务器终端执行安装命令</div>
+      </div>
+      <div class="action" onclick="event.stopPropagation();copyAndToast('curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash')">点我复制</div>
     </div>
-    <div class="qr-placeholder">📱<br>动态生成</div>
+    <div class="cmd-box" id="cmd-1">
+      <div class="cmd">curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash<span class="hint">👆 点上方按钮复制 → 终端长按粘贴 → 回车执行</span></div>
+    </div>
+    <div class="detail-box" id="detail-1">
+      <div class="tip">
+        安装完后执行：<strong>source ~/.bashrc</strong><br>
+        验证：<strong>hermes --version</strong>
+      </div>
+    </div>
   </div>
 
-  <div class="detail-panel" id="detail-4">
-    <p>在服务器终端执行：</p>
-    <div class="code">
-hermes gateway setup
-      <button class="copy-btn" onclick="copyCmd('hermes gateway setup',this)">复制</button>
+  <div class="arrow">▼</div>
+
+  <!-- ============ STEP 2: 模型 ============ -->
+  <div class="step-card" onclick="expand(this,'cmd-2')">
+    <div class="step-head">
+      <div class="num s2">②</div>
+      <div class="info">
+        <div class="title">配置 DeepSeek 模型</div>
+        <div class="desc">选择模型 · 粘贴 API Key</div>
+      </div>
+      <div class="action" onclick="event.stopPropagation();copyAndToast('hermes setup model')">点我复制</div>
     </div>
-    <p>→ <strong>个人微信</strong>：输入 <strong>14</strong> 并回车<br>
-    → <strong>企业微信</strong>：输入 <strong>12</strong> 并回车<br>
-    → 系统生成 <strong>二维码</strong>，扫码授权 ✅<br>
-    → 退出：<strong>Ctrl+Z</strong></p>
+    <div class="cmd-box" id="cmd-2">
+      <div class="cmd">hermes setup model<span class="hint">👆 复制后 → 终端粘贴 → 回车 → 然后操作👇</span></div>
+    </div>
+    <div class="detail-box" id="detail-2">
+      <div class="tip">
+        <strong>执行后的操作：</strong><br>
+        ① 输入 <strong>16</strong> → 回车（选 DeepSeek）<br>
+        ② 长按粘贴 <strong>API Key</strong> → 回车<br>
+        ③ 输入 <strong>deepseek-v4-flash</strong> → 回车<br>
+        ④ 是否默认 → 输入 <strong>N</strong> → 回车<br>
+        ⑤ 按 <strong>Ctrl+Z</strong> 退出
+      </div>
+    </div>
   </div>
 
-  <div class="step-arrow">▼</div>
+  <div class="arrow">▼</div>
 
-  <div class="complete-badge"><span>✅ 安装完成 · 微信直接对话</span></div>
+  <!-- ============ STEP 3: 微信 ============ -->
+  <div class="step-card" onclick="expand(this,'cmd-3')">
+    <div class="step-head">
+      <div class="num s3">③</div>
+      <div class="info">
+        <div class="title">接入微信</div>
+        <div class="desc">运行命令 · 扫码授权</div>
+      </div>
+      <div class="action" onclick="event.stopPropagation();copyAndToast('hermes gateway setup')">点我复制</div>
+    </div>
+    <div class="cmd-box" id="cmd-3">
+      <div class="cmd">hermes gateway setup<span class="hint">👆 复制 → 终端粘贴 → 回车 → 然后操作👇</span></div>
+    </div>
+    <div class="detail-box" id="detail-3">
+      <div class="tip">
+        <strong>执行后：</strong><br>
+        → 输入 <strong>14</strong> → 回车（个人微信）<br>
+        → 屏幕出现 <strong>二维码</strong><br>
+        → 📱 <strong>截图保存 → 微信扫一扫</strong> 授权<br>
+        → 成功后按 Ctrl+Z 退出
+      </div>
+    </div>
+  </div>
 
-  <a class="cta-btn" href="https://buy.cloud.tencent.com/lighthouse" target="_blank" style="width:100%;margin-top:16px">
-    ☁️ 去腾讯云购买服务器
-  </a>
+  <div class="arrow">▼</div>
+
+  <!-- ============ STEP 4: 完成 ============ -->
+  <div class="step-card" onclick="expand(this,'cmd-4')">
+    <div class="step-head">
+      <div class="num s4">④</div>
+      <div class="info">
+        <div class="title">验证安装</div>
+        <div class="desc">确认一切正常</div>
+      </div>
+      <div class="action" onclick="event.stopPropagation();copyAndToast('hermes status')">点我复制</div>
+    </div>
+    <div class="cmd-box" id="cmd-4">
+      <div class="cmd">hermes status<span class="hint">👆 复制 → 终端粘贴 → 回车</span></div>
+    </div>
+    <div class="detail-box" id="detail-4">
+      <div class="tip">
+        看到绿色 <strong>✅</strong> 状态表示一切正常 🎉<br>
+        现在打开微信 → 找"Hermes Agent"发消息试试！
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow">▼</div>
+
+  <div class="complete">
+    <span>✅ 安装完成 · 微信直接对话</span>
+  </div>
 
 </div>
 
 <div class="footer">
-  <p><a href="https://u-1788.github.io/hermes-10things/">🔗 查看全部 10 大技能</a></p>
+  <a href="https://u-1788.github.io/hermes-10things/">🔗 十大技能</a>
 </div>
 
 <script>
-function toggleDetail(id){
-  var el=document.getElementById(id)
-  if(el) el.classList.toggle('active')
+// 展开/收起详情
+function expand(el, id) {
+  var box = document.getElementById(id);
+  if (box) box.classList.toggle('show');
 }
-function copyCmd(t,btn){
-  navigator.clipboard.writeText(t).then(function(){
-    btn.textContent='✅已复制'
-    setTimeout(function(){btn.textContent='复制'},2000)
-  }).catch(function(){
-    var ta=document.createElement('textarea')
-    ta.value=t;document.body.appendChild(ta)
-    ta.select();document.execCommand('copy')
-    document.body.removeChild(ta)
-    btn.textContent='✅已复制'
-    setTimeout(function(){btn.textContent='复制'},2000)
-  })
+
+// 复制 + 弹提示
+function copyAndToast(text) {
+  var toast = document.getElementById('toast');
+  navigator.clipboard.writeText(text).then(function() {
+    toast.classList.add('show');
+    setTimeout(function(){toast.classList.remove('show')}, 2000);
+  }).catch(function() {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    toast.classList.add('show');
+    setTimeout(function(){toast.classList.remove('show')}, 2000);
+  });
 }
 </script>
 </body>
