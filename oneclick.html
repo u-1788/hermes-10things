@@ -8,8 +8,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#060e1e;color:#fff;min-height:100vh}
 
-/* Hero */
-.hero{min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 20px;background:linear-gradient(135deg,#0a2a5e 0%,#060e1e 50%,#0a1a3e 100%);position:relative;overflow:hidden}
+.hero{min-height:75vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 20px;background:linear-gradient(135deg,#0a2a5e 0%,#060e1e 50%,#0a1a3e 100%);position:relative;overflow:hidden}
 .hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(transparent,#060e1e)}
 .badge{display:inline-block;padding:6px 16px;border-radius:20px;background:rgba(255,213,79,0.1);border:1px solid rgba(255,213,79,0.2);font-size:11px;color:#ffd54f;letter-spacing:4px;margin-bottom:16px}
 .hero h1{font-size:36px;font-weight:800;background:linear-gradient(135deg,#fff 0%,#ffd54f 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.3;margin-bottom:12px}
@@ -17,53 +16,46 @@ body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;backgr
 .hero .steps-badge{display:flex;gap:8px;margin-bottom:28px;flex-wrap:wrap;justify-content:center}
 .hero .steps-badge span{padding:5px 12px;border-radius:6px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);font-size:11px;color:rgba(255,255,255,0.4)}
 
-/* CTA */
 .cta-btn{display:inline-flex;align-items:center;gap:8px;padding:16px 40px;border-radius:30px;background:linear-gradient(135deg,#ffd54f,#ffb300);color:#0a0a12;font-size:17px;font-weight:700;text-decoration:none;box-shadow:0 4px 24px rgba(255,213,79,0.3);transition:all 0.3s;justify-content:center}
 .cta-btn:hover{transform:translateY(-2px);box-shadow:0 6px 30px rgba(255,213,79,0.4)}
 
-/* Flow */
 .flow-section{padding:30px 14px;max-width:600px;margin:0 auto}
 
-/* Tabs */
-.version-tabs{display:flex;gap:0;background:rgba(255,255,255,0.04);border-radius:12px;padding:4px;margin-bottom:20px}
-.version-tab{flex:1;text-align:center;padding:12px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;border:none;background:transparent;color:rgba(255,255,255,0.4);transition:all 0.3s}
-.version-tab.active{background:rgba(255,213,79,0.12);color:#ffd54f;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
-.version-tab .tab-icon{display:block;font-size:22px;margin-bottom:2px}
+.section-title{text-align:center;font-size:18px;font-weight:800;color:#ffd54f;margin-bottom:6px}
+.section-sub{text-align:center;font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:18px}
 
-/* Step Card - with QR code */
-.step-card{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:12px;margin-bottom:8px;text-decoration:none;color:inherit;transition:all 0.2s;position:relative}
+.step-card{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:12px;margin-bottom:8px;text-decoration:none;color:inherit;transition:all 0.2s}
 .step-card:active{background:rgba(255,213,79,0.06);border-color:rgba(255,213,79,0.15)}
 .step-card .step-left{flex:1;min-width:0}
 .step-card .step-title{font-size:13px;font-weight:700;margin-bottom:2px}
 .step-card .step-title .tag{display:inline-block;width:20px;height:20px;border-radius:50%;text-align:center;line-height:20px;font-size:10px;font-weight:800;margin-right:6px}
-.step-card .step-title .tag.blue{background:rgba(100,181,246,0.15);color:#64b5f6}
-.step-card .step-title .tag.orange{background:rgba(255,167,38,0.15);color:#ffa726}
-.step-card .step-title .tag.green{background:rgba(102,187,106,0.15);color:#66bb6a}
+.step-card .step-title .tag.s1{background:rgba(100,181,246,0.15);color:#64b5f6}
+.step-card .step-title .tag.s2{background:rgba(255,167,38,0.15);color:#ffa726}
+.step-card .step-title .tag.s3{background:rgba(186,104,200,0.15);color:#ce93d8}
+.step-card .step-title .tag.s4{background:rgba(102,187,106,0.15);color:#66bb6a}
 .step-card .step-desc{font-size:11px;color:rgba(255,255,255,0.45)}
 .step-card .step-url{font-size:10px;color:rgba(255,213,79,0.3);margin-top:2px;word-break:break-all}
 .step-card .qr-wrap{width:64px;height:64px;flex-shrink:0;border-radius:8px;overflow:hidden;background:#fff;padding:3px;display:flex;align-items:center;justify-content:center}
-.step-card .qr-wrap svg,.step-card .qr-wrap img{width:100%;height:100%;display:block}
+.step-card .qr-wrap img{width:100%;height:100%;display:block}
 .step-card .qr-placeholder{width:64px;height:64px;flex-shrink:0;border-radius:8px;background:rgba(255,255,255,0.04);border:1px dashed rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(255,255,255,0.25);text-align:center;line-height:1.3}
 
-/* Arrow between steps */
 .step-arrow{text-align:center;padding:1px 0;color:rgba(255,255,255,0.12);font-size:10px}
 
-/* Card for non-link steps */
-.step-card-static{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:12px;margin-bottom:8px;color:inherit}
+.step-card-static{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:12px;margin-bottom:8px;color:inherit;cursor:pointer;transition:all 0.2s}
+.step-card-static:active{background:rgba(255,213,79,0.06);border-color:rgba(255,213,79,0.15)}
 .step-card-static .step-left{flex:1;min-width:0}
 .step-card-static .step-title{font-size:13px;font-weight:700;margin-bottom:2px}
 .step-card-static .step-title .tag{display:inline-block;width:20px;height:20px;border-radius:50%;text-align:center;line-height:20px;font-size:10px;font-weight:800;margin-right:6px}
-.step-card-static .step-title .tag.blue{background:rgba(100,181,246,0.15);color:#64b5f6}
-.step-card-static .step-title .tag.orange{background:rgba(255,167,38,0.15);color:#ffa726}
-.step-card-static .step-title .tag.green{background:rgba(102,187,106,0.15);color:#66bb6a}
+.step-card-static .step-title .tag.s1{background:rgba(100,181,246,0.15);color:#64b5f6}
+.step-card-static .step-title .tag.s2{background:rgba(255,167,38,0.15);color:#ffa726}
+.step-card-static .step-title .tag.s3{background:rgba(186,104,200,0.15);color:#ce93d8}
+.step-card-static .step-title .tag.s4{background:rgba(102,187,106,0.15);color:#66bb6a}
 .step-card-static .step-desc{font-size:11px;color:rgba(255,255,255,0.45)}
 .step-card-static .qr-placeholder{width:64px;height:64px;flex-shrink:0;border-radius:8px;background:rgba(255,255,255,0.04);border:1px dashed rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(255,255,255,0.25);text-align:center;line-height:1.3}
 
-/* Completion badge */
 .complete-badge{text-align:center;padding:10px;margin-top:6px;border-radius:10px;background:rgba(102,187,106,0.1);border:1px solid rgba(102,187,106,0.15)}
 .complete-badge span{color:#66bb6a;font-weight:700;font-size:13px}
 
-/* Step detail panel (for WeChat QR) */
 .detail-panel{display:none;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:14px;margin-top:4px;animation:fadeIn 0.2s}
 .detail-panel.active{display:block}
 .detail-panel p{font-size:12px;color:rgba(255,255,255,0.6);line-height:1.6}
@@ -71,18 +63,15 @@ body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;backgr
 .detail-panel .code .copy-btn{position:absolute;top:6px;right:6px;padding:3px 8px;border-radius:4px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.4);font-size:9px;cursor:pointer;font-family:inherit}
 .detail-panel .code .copy-btn:active{background:rgba(255,213,79,0.15);color:#ffd54f}
 
-/* Config box */
 .config-box{margin:12px 0;padding:12px;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06)}
 .config-box .row{display:flex;justify-content:space-between;padding:5px 0;font-size:11px;border-bottom:1px solid rgba(255,255,255,0.04)}
 .config-box .row:last-child{border-bottom:none}
 .config-box .row .l{color:rgba(255,255,255,0.4)}
 .config-box .row .v{color:rgba(255,255,255,0.7)}
 
-/* Footer */
 .footer{text-align:center;padding:30px 16px;border-top:1px solid rgba(255,255,255,0.04);color:rgba(255,255,255,0.2);font-size:11px}
 .footer a{color:rgba(255,213,79,0.4);text-decoration:none}
 
-/* Scan hint */
 .scan-hint{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:4px;background:rgba(100,181,246,0.08);font-size:9px;color:#64b5f6;margin-top:2px}
 .scan-hint span{font-size:10px}
 
@@ -102,214 +91,110 @@ body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;backgr
 <div class="hero">
   <div class="badge">✦ AI 智能体 · 零门槛部署</div>
   <h1>Hermes Agent<br>一键部署</h1>
-  <p class="sub">微信内长按二维码 · 扫码直达 · 三步配好</p>
+  <p class="sub">微信内长按二维码 · 扫码直达 · 四步配好</p>
   <div class="steps-badge">
-    <span>📱 扫码注册</span>
-    <span>⚙️ 自动配置</span>
-    <span>💬 微信对话</span>
+    <span>☁️ 购买服务器</span>
+    <span>🔑 注册 DeepSeek</span>
+    <span>⚙️ 配置模型</span>
+    <span>💬 接入微信</span>
   </div>
-  <a class="cta-btn" href="#flow-section">📲 开始部署 · 仅需三步</a>
+  <a class="cta-btn" href="#flow-section">📲 开始部署 · 四步搞定</a>
 </div>
 
 <!-- FLOW -->
 <div class="flow-section" id="flow-section">
 
-  <div class="version-tabs">
-    <button class="version-tab active" onclick="switchTab('free')">
-      <span class="tab-icon">🆓</span> 免费版
-    </button>
-    <button class="version-tab" onclick="switchTab('paid')">
-      <span class="tab-icon">💎</span> 付费版
-    </button>
+  <div class="section-title">操作步骤</div>
+  <div class="section-sub">点击步骤或长按二维码扫码操作</div>
+
+  <!-- Step ① -->
+  <a class="step-card" href="https://buy.cloud.tencent.com/lighthouse" target="_blank">
+    <div class="step-left">
+      <div class="step-title"><span class="tag s1">①</span>购买腾讯云服务器</div>
+      <div class="step-desc">轻量应用服务器 · 广州 · 2核4G</div>
+      <div class="step-url">buy.cloud.tencent.com/lighthouse</div>
+      <div class="scan-hint"><span>📷</span> 长按扫码</div>
+    </div>
+    <div class="qr-wrap">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://buy.cloud.tencent.com/lighthouse" alt="QR" loading="lazy">
+    </div>
+  </a>
+
+  <div class="step-arrow">▼</div>
+
+  <!-- Step ② -->
+  <a class="step-card" href="https://platform.deepseek.com/" target="_blank">
+    <div class="step-left">
+      <div class="step-title"><span class="tag s2">②</span>注册 DeepSeek</div>
+      <div class="step-desc">注册登录 · 创建 API Key 并保存</div>
+      <div class="step-url">platform.deepseek.com</div>
+      <div class="scan-hint"><span>📷</span> 长按扫码</div>
+    </div>
+    <div class="qr-wrap">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://platform.deepseek.com/" alt="QR" loading="lazy">
+    </div>
+  </a>
+
+  <div class="step-arrow">▼</div>
+
+  <!-- Step ③ -->
+  <div class="step-card-static" onclick="toggleDetail('detail-3')">
+    <div class="step-left">
+      <div class="step-title"><span class="tag s3">③</span>登录服务器 + 配置模型</div>
+      <div class="step-desc">免密登录 · 配置 DeepSeek V4 Flash</div>
+    </div>
+    <div class="qr-placeholder">💻<br>终端操作</div>
   </div>
 
-  <!-- ==================== FREE VERSION ==================== -->
-  <div class="step-detail active" id="free">
-
-    <div class="step-desc" style="font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:14px;text-align:center">
-      点击步骤或长按二维码扫码操作
-    </div>
-
-    <!-- Step ① -->
-    <a class="step-card" href="https://lightvela.tencent.com/" target="_blank">
-      <div class="step-left">
-        <div class="step-title"><span class="tag blue">①</span>领取免费 Agent</div>
-        <div class="step-desc">Lightvela 腾讯开放云 · 免费额度</div>
-        <div class="step-url">lightvela.tencent.com</div>
-        <div class="scan-hint"><span>📷</span> 长按扫码</div>
-      </div>
-      <div class="qr-wrap">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://lightvela.tencent.com/" alt="QR" loading="lazy">
-      </div>
-    </a>
-
-    <div class="step-arrow">▼</div>
-
-    <!-- Step ② -->
-    <a class="step-card" href="https://platform.deepseek.com/" target="_blank">
-      <div class="step-left">
-        <div class="step-title"><span class="tag blue">②</span>注册 DeepSeek</div>
-        <div class="step-desc">注册登录 · 创建 API Key 并保存</div>
-        <div class="step-url">platform.deepseek.com</div>
-        <div class="scan-hint"><span>📷</span> 长按扫码</div>
-      </div>
-      <div class="qr-wrap">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://platform.deepseek.com/" alt="QR" loading="lazy">
-      </div>
-    </a>
-
-    <div class="step-arrow">▼</div>
-
-    <!-- Step ③ config model -->
-    <div class="step-card-static" onclick="toggleDetail('free-detail-3')">
-      <div class="step-left">
-        <div class="step-title"><span class="tag blue">③</span>配置模型 · DeepSeek V4 Flash</div>
-        <div class="step-desc">粘贴 API Key，选择模型版本</div>
-      </div>
-      <div class="qr-placeholder">💻<br>终端操作</div>
-    </div>
-
-    <div class="detail-panel" id="free-detail-3">
-      <p>在服务器终端执行：</p>
-      <div class="code">
+  <div class="detail-panel" id="detail-3">
+    <p><strong>登录服务器：</strong></p>
+    <p>腾讯云控制台 → 轻量应用服务器 → 点击「登录」→「免密登录」</p>
+    <p style="margin-top:8px"><strong>配置模型：</strong></p>
+    <div class="code">
 hermes setup model
-        <button class="copy-btn" onclick="copyCmd('hermes setup model',this)">复制</button>
-      </div>
-      <p>① 输入数字 <strong>16</strong>（DeepSeek）<br>
-      ② 粘贴 <strong>API Key</strong>，回车<br>
-      ③ 选择 <strong>deepseek-v4-flash</strong><br>
-      ④ 输入 <strong>N</strong>，回车<br>
-      ⑤ <strong>Ctrl+Z</strong> 退出</p>
+      <button class="copy-btn" onclick="copyCmd('hermes setup model',this)">复制</button>
     </div>
+    <p>① 输入 <strong>16</strong> → ② 粘贴 API Key → ③ 选 deepseek-v4-flash → ④ N → ⑤ Ctrl+Z</p>
 
-    <div class="step-arrow">▼</div>
-
-    <!-- Step ④ WeChat -->
-    <div class="step-card-static" onclick="toggleDetail('free-detail-4')">
-      <div class="step-left">
-        <div class="step-title"><span class="tag green">④</span>接入微信 · 扫码对话</div>
-        <div class="step-desc">运行命令生成二维码，微信扫码授权</div>
-      </div>
-      <div class="qr-placeholder">📱<br>动态生成</div>
+    <p style="margin-top:8px"><strong>推荐配置：</strong></p>
+    <div class="config-box">
+      <div class="row"><span class="l">地域</span><span class="v">广州</span></div>
+      <div class="row"><span class="l">镜像</span><span class="v">Hermes Agent v0.12.0</span></div>
+      <div class="row"><span class="l">套餐</span><span class="v">入门型（2核4G）</span></div>
+      <div class="row"><span class="l">时长</span><span class="v">1 个月</span></div>
     </div>
-
-    <div class="detail-panel" id="free-detail-4">
-      <p>在服务器终端执行：</p>
-      <div class="code">
-hermes gateway setup
-        <button class="copy-btn" onclick="copyCmd('hermes gateway setup',this)">复制</button>
-      </div>
-      <p>等待交互向导启动后：</p>
-      <p>→ <strong>个人微信</strong>：输入 <strong>14</strong> 并回车<br>
-      → 系统生成 <strong>二维码</strong><br>
-      → 微信扫码授权 ✅</p>
-    </div>
-
-    <div class="step-arrow">▼</div>
-
-    <div class="complete-badge"><span>✅ 免费安装完成 · 微信直接对话</span></div>
-
-    <a class="cta-btn" href="https://lightvela.tencent.com/" target="_blank" style="width:100%;margin-top:16px">
-      📲 立即开始 · 扫码注册
-    </a>
   </div>
 
-  <!-- ==================== PAID VERSION ==================== -->
-  <div class="step-detail" id="paid">
+  <div class="step-arrow">▼</div>
 
-    <div class="step-desc" style="font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:14px;text-align:center">
-      点击步骤或长按二维码扫码操作
+  <!-- Step ④ -->
+  <div class="step-card-static" onclick="toggleDetail('detail-4')">
+    <div class="step-left">
+      <div class="step-title"><span class="tag s4">④</span>接入微信 · 扫码对话</div>
+      <div class="step-desc">运行命令生成二维码，微信扫码授权</div>
     </div>
-
-    <!-- Step ① -->
-    <a class="step-card" href="https://buy.cloud.tencent.com/lighthouse" target="_blank">
-      <div class="step-left">
-        <div class="step-title"><span class="tag orange">①</span>购买腾讯云服务器</div>
-        <div class="step-desc">轻量应用服务器 · 广州 · 2核4G</div>
-        <div class="step-url">buy.cloud.tencent.com/lighthouse</div>
-        <div class="scan-hint"><span>📷</span> 长按扫码</div>
-      </div>
-      <div class="qr-wrap">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://buy.cloud.tencent.com/lighthouse" alt="QR" loading="lazy">
-      </div>
-    </a>
-
-    <div class="step-arrow">▼</div>
-
-    <!-- Step ② -->
-    <a class="step-card" href="https://platform.deepseek.com/" target="_blank">
-      <div class="step-left">
-        <div class="step-title"><span class="tag orange">②</span>注册 DeepSeek</div>
-        <div class="step-desc">注册登录 · 创建 API Key 并保存</div>
-        <div class="step-url">platform.deepseek.com</div>
-        <div class="scan-hint"><span>📷</span> 长按扫码</div>
-      </div>
-      <div class="qr-wrap">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://platform.deepseek.com/" alt="QR" loading="lazy">
-      </div>
-    </a>
-
-    <div class="step-arrow">▼</div>
-
-    <!-- Step ③ Login + config -->
-    <div class="step-card-static" onclick="toggleDetail('paid-detail-3')">
-      <div class="step-left">
-        <div class="step-title"><span class="tag orange">③</span>登录服务器 + 配置模型</div>
-        <div class="step-desc">免密登录 · 配置 DeepSeek V4 Flash</div>
-      </div>
-      <div class="qr-placeholder">💻<br>终端操作</div>
-    </div>
-
-    <div class="detail-panel" id="paid-detail-3">
-      <p><strong>登录服务器：</strong></p>
-      <p>腾讯云控制台 → 轻量应用服务器 → 点击「登录」→「免密登录」</p>
-      <p style="margin-top:8px"><strong>配置模型：</strong></p>
-      <div class="code">
-hermes setup model
-        <button class="copy-btn" onclick="copyCmd('hermes setup model',this)">复制</button>
-      </div>
-      <p>① 输入 <strong>16</strong> → ② 粘贴 API Key → ③ 选 deepseek-v4-flash → ④ N → ⑤ Ctrl+Z</p>
-
-      <p style="margin-top:8px"><strong>推荐配置：</strong></p>
-      <div class="config-box">
-        <div class="row"><span class="l">地域</span><span class="v">广州</span></div>
-        <div class="row"><span class="l">镜像</span><span class="v">Hermes Agent v0.12.0</span></div>
-        <div class="row"><span class="l">套餐</span><span class="v">入门型（2核4G）</span></div>
-        <div class="row"><span class="l">时长</span><span class="v">1 个月</span></div>
-      </div>
-    </div>
-
-    <div class="step-arrow">▼</div>
-
-    <!-- Step ④ WeChat -->
-    <div class="step-card-static" onclick="toggleDetail('paid-detail-4')">
-      <div class="step-left">
-        <div class="step-title"><span class="tag green">④</span>接入微信 · 扫码对话</div>
-        <div class="step-desc">运行命令生成二维码，微信扫码授权</div>
-      </div>
-      <div class="qr-placeholder">📱<br>动态生成</div>
-    </div>
-
-    <div class="detail-panel" id="paid-detail-4">
-      <p>在服务器终端执行：</p>
-      <div class="code">
-hermes gateway setup
-        <button class="copy-btn" onclick="copyCmd('hermes gateway setup',this)">复制</button>
-      </div>
-      <p>→ <strong>个人微信</strong>：输入 <strong>14</strong> 并回车<br>
-      → <strong>企业微信</strong>：输入 <strong>12</strong> 并回车<br>
-      → 系统生成 <strong>二维码</strong>，扫码授权 ✅<br>
-      → 退出：<strong>Ctrl+Z</strong></p>
-    </div>
-
-    <div class="step-arrow">▼</div>
-
-    <div class="complete-badge"><span>✅ 付费安装完成 · 微信直接对话</span></div>
-
-    <a class="cta-btn" href="https://buy.cloud.tencent.com/lighthouse" target="_blank" style="width:100%;margin-top:16px">
-      ☁️ 去腾讯云购买服务器
-    </a>
+    <div class="qr-placeholder">📱<br>动态生成</div>
   </div>
+
+  <div class="detail-panel" id="detail-4">
+    <p>在服务器终端执行：</p>
+    <div class="code">
+hermes gateway setup
+      <button class="copy-btn" onclick="copyCmd('hermes gateway setup',this)">复制</button>
+    </div>
+    <p>→ <strong>个人微信</strong>：输入 <strong>14</strong> 并回车<br>
+    → <strong>企业微信</strong>：输入 <strong>12</strong> 并回车<br>
+    → 系统生成 <strong>二维码</strong>，扫码授权 ✅<br>
+    → 退出：<strong>Ctrl+Z</strong></p>
+  </div>
+
+  <div class="step-arrow">▼</div>
+
+  <div class="complete-badge"><span>✅ 安装完成 · 微信直接对话</span></div>
+
+  <a class="cta-btn" href="https://buy.cloud.tencent.com/lighthouse" target="_blank" style="width:100%;margin-top:16px">
+    ☁️ 去腾讯云购买服务器
+  </a>
 
 </div>
 
@@ -318,12 +203,6 @@ hermes gateway setup
 </div>
 
 <script>
-function switchTab(v){
-  document.querySelectorAll('.version-tab').forEach(function(e){e.classList.remove('active')})
-  document.querySelectorAll('.step-detail').forEach(function(e){e.classList.remove('active')})
-  document.querySelector('.version-tab[onclick*="'+v+'"]').classList.add('active')
-  document.getElementById(v).classList.add('active')
-}
 function toggleDetail(id){
   var el=document.getElementById(id)
   if(el) el.classList.toggle('active')
