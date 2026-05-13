@@ -46,7 +46,9 @@ function genCmd(){
     +'hermes config set model.base_url https://api.deepseek.com/v1\n'
     +'hermes config set model.default deepseek-v4-flash\n'
     +'hermes config set model.api_key '+key+'\n\n'
-    +'hermes gateway setup'
+    +'hermes gateway setup\n\n'
+    +'# → 输入 14（个人微信）→ 回车\n'
+    +'# → 输入 12（企业微信）→ 回车'
   document.getElementById('cmdText').textContent=cmd
   box.classList.add('show')
 }
