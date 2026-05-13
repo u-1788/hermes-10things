@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>配置 DeepSeek 模型</title>
+<title>DeepSeek + 微信 一键配置</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#070b17;color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;-webkit-tap-highlight-color:transparent}
@@ -37,8 +37,8 @@ body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;backgr
 <div class="toast" id="toast">✅ 已复制！到终端粘贴执行</div>
 
 <div class="card">
-  <h1><span>③</span> 配置 DeepSeek</h1>
-  <p class="sub">填入 API Key · 复制命令 · 终端粘贴</p>
+  <h1><span>⚡</span> 两步合一</h1>
+  <p class="sub">填 API Key → 复制 → 终端粘贴 → 扫码授权</p>
 
   <div class="input-group">
     <label>DeepSeek API Key</label>
@@ -49,8 +49,8 @@ body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;backgr
 
   <div class="cmd-box" id="cmdBox">
     <pre id="cmdText"></pre>
-    <button class="btn btn-copy" onclick="copyIt()">📋 复制命令</button>
-    <div class="tip">粘贴到服务器终端 → 回车执行</div>
+    <button class="btn btn-copy" onclick="copyIt()">📋 复制全部命令</button>
+    <div class="tip">粘贴到终端 → 自动配置 + 弹出微信二维码扫码授权</div>
   </div>
 </div>
 
@@ -64,12 +64,16 @@ function genCmd(){
     st.className='status err';st.textContent='⚠️ API Key 应以 sk- 开头'
     box.classList.remove('show');return
   }
-  st.className='status ok';st.textContent='✅ 格式正确，点下方按钮复制'
-  var cmd='hermes config set model.provider custom\n'
+  st.className='status ok';st.textContent='✅ 格式正确！点下方按钮复制全部命令'
+  var cmd='# ===== 两步：配置 DeepSeek + 接入微信 =====\n\n'
+    + 'hermes config set model.provider custom\n'
     + 'hermes config set model.base_url https://api.deepseek.com/v1\n'
     + 'hermes config set model.default deepseek-v4-flash\n'
-    + 'hermes config set model.api_key ' + key + '\n'
-    + 'echo "✅ DeepSeek 配置完成！"'
+    + 'hermes config set model.api_key ' + key + '\n\n'
+    + 'hermes gateway setup\n\n'
+    + '# 输完上面命令后：\n'
+    + '# → 输入 14（个人微信）→ 回车\n'
+    + '# → 弹出二维码 → 微信扫码授权 ✅'
   document.getElementById('cmdText').textContent=cmd
   box.classList.add('show')
 }
@@ -82,7 +86,6 @@ function copyIt(){
     document.body.removeChild(ta);show()
   })
 }
-
 function show(){
   var t=document.getElementById('toast');t.classList.add('show')
   setTimeout(function(){t.classList.remove('show')},2500)
