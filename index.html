@@ -124,7 +124,7 @@
       background:rgba(255,213,79,0.15);color:var(--gold);
       font-size:11px;font-weight:600;transition:var(--transition);
     }
-    .card .copy-btn:hover{background:rgba(255,213,79,0.25)}
+    .card .copy-btn:hover{background:var(--gold);color:var(--bg-deep)}
     .card .copy-btn.done{background:#4caf50;color:#fff}
 
     /* Copy All button */
@@ -137,18 +137,6 @@
     }
     .btn-copy-all:hover{background:var(--gold-dim);border-color:var(--gold)}
     .btn-copy-all.done{background:#4caf50;color:#fff;border-color:#4caf50}
-
-    /* Step guide */
-    .guide{max-width:600px;margin:30px auto 0;text-align:center}
-    .guide h3{font-size:18px;font-weight:700;color:var(--gold);margin-bottom:16px}
-    .guide-steps{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-    .guide-step{
-      padding:10px 18px;border-radius:12px;
-      background:var(--bg-card);border:1px solid rgba(255,213,79,0.08);
-      font-size:13px;color:var(--muted);
-    }
-    .guide-step span{color:var(--gold);font-weight:700}
-    .guide-step em{color:var(--white);font-style:normal;font-weight:600}
 
     /* Footer */
     .footer-wrap{
@@ -295,15 +283,6 @@
   </div>
   <div class="grid" id="cardGrid"></div>
 
-  <!-- 三步上手 -->
-  <div class="guide">
-    <h3>🚀 三步上手</h3>
-    <div class="guide-steps">
-      <div class="guide-step"><span>①</span> 点击卡片 <em>复制命令</em></div>
-      <div class="guide-step"><span>②</span> 粘贴到 <em>终端 / 智能体</em></div>
-      <div class="guide-step"><span>③</span> 技能自动安装完成 <em>✓</em></div>
-    </div>
-  </div>
 </section>
 
 <!-- Footer -->
