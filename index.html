@@ -150,40 +150,6 @@
     .guide-step span{color:var(--gold);font-weight:700}
     .guide-step em{color:var(--white);font-style:normal;font-weight:600}
 
-    /* Pricing */
-    .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:800px;margin:0 auto}
-    .pricing-card{
-      background:var(--bg-card);backdrop-filter:blur(8px);
-      border:1px solid rgba(255,213,79,0.06);
-      border-radius:var(--radius);padding:28px 22px;text-align:center;transition:var(--transition);
-    }
-    .pricing-card:hover{transform:translateY(-3px);border-color:rgba(255,213,79,0.15)}
-    .pricing-card.featured{border-color:var(--gold);position:relative}
-    .pricing-card.featured::before{
-      content:'🔥 推荐';position:absolute;top:-12px;left:50%;transform:translateX(-50%);
-      background:var(--gold);color:var(--bg-deep);padding:3px 16px;border-radius:20px;
-      font-size:11px;font-weight:700;
-    }
-    .pricing-name{font-size:17px;font-weight:700;margin-bottom:6px}
-    .pricing-price{font-size:34px;font-weight:900;color:var(--gold)}
-    .pricing-unit{font-size:14px;color:var(--muted);margin-bottom:4px}
-    .pricing-desc{font-size:12px;color:var(--muted);margin-bottom:12px}
-    .pricing-feats{list-style:none;text-align:left;margin:0}
-    .pricing-feats li{padding:5px 0;font-size:12px;color:var(--muted)}
-    .pricing-feats li::before{content:'✓ ';color:var(--gold);font-weight:700}
-
-    /* Services */
-    .service-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-    .service-card{
-      background:var(--bg-card);backdrop-filter:blur(8px);
-      border:1px solid rgba(255,213,79,0.06);
-      border-radius:var(--radius);padding:22px 20px;text-align:center;transition:var(--transition);
-    }
-    .service-card:hover{transform:translateY(-2px);border-color:rgba(255,213,79,0.12)}
-    .service-icon{font-size:30px;margin-bottom:8px}
-    .service-card h4{font-size:16px;font-weight:700;color:var(--gold);margin-bottom:6px}
-    .service-card p{font-size:12px;color:var(--muted);line-height:1.6}
-
     /* Footer */
     .footer-wrap{
       background:linear-gradient(180deg,transparent,rgba(10,42,94,0.15));
@@ -235,8 +201,6 @@
     @media(max-width:768px){
       .hero h1{font-size:30px}
       .grid{grid-template-columns:1fr}
-      .pricing-grid{grid-template-columns:1fr;max-width:300px}
-      .service-grid{grid-template-columns:1fr}
       section{padding:40px 16px}
     }
   </style>
@@ -338,86 +302,6 @@
       <div class="guide-step"><span>①</span> 点击卡片 <em>复制命令</em></div>
       <div class="guide-step"><span>②</span> 粘贴到 <em>终端 / 智能体</em></div>
       <div class="guide-step"><span>③</span> 技能自动安装完成 <em>✓</em></div>
-    </div>
-  </div>
-</section>
-
-<!-- 报价方案 -->
-<section id="pricing">
-  <div class="sec-title">
-    <h2>💎 透明定价</h2>
-    <p>从免费体验到企业级维护，按需选择</p>
-    <div class="gold-line"></div>
-  </div>
-  <div class="pricing-grid">
-    <div class="pricing-card">
-      <div class="pricing-name">🎯 入门版</div>
-      <div class="pricing-price">免费</div>
-      <div class="pricing-desc">体验核心功能，快速上手</div>
-      <ul class="pricing-feats">
-        <li>10项基础技能清单</li>
-        <li>SkillHub安装指引</li>
-        <li>社区文档支持</li>
-        <li>基础更新</li>
-      </ul>
-    </div>
-    <div class="pricing-card featured">
-      <div class="pricing-name">🚀 专业版</div>
-      <div class="pricing-price">¥199</div>
-      <div class="pricing-unit">/年</div>
-      <div class="pricing-desc">个人创业者首选 · 性价比之王</div>
-      <ul class="pricing-feats">
-        <li>全部10项一键安装包</li>
-        <li>Docker沙箱预配置</li>
-        <li>Camofox浏览器集成</li>
-        <li>售后系统维护支持</li>
-        <li>持续版本升级</li>
-        <li>VIP 答疑通道</li>
-      </ul>
-    </div>
-    <div class="pricing-card">
-      <div class="pricing-name">🏢 企业版</div>
-      <div class="pricing-price">定制</div>
-      <div class="pricing-desc">团队/企业专属方案</div>
-      <ul class="pricing-feats">
-        <li>私有化部署</li>
-        <li>多Agent定制配置</li>
-        <li>SLA技术保障</li>
-        <li>专属运维工程师</li>
-        <li>7×24小时响应</li>
-        <li>上门培训服务</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- 维护服务 -->
-<section>
-  <div class="sec-title">
-    <h2>🛠️ 后期系统维护</h2>
-    <p>买了不是结束，服务才刚刚开始</p>
-    <div class="gold-line"></div>
-  </div>
-  <div class="service-grid">
-    <div class="service-card">
-      <div class="service-icon">🔄</div>
-      <h4>持续更新</h4>
-      <p>紧跟 Hermes Agent 版本迭代，自动推送更新包，你只管用，升级的事交给我们。</p>
-    </div>
-    <div class="service-card">
-      <div class="service-icon">🔧</div>
-      <h4>故障修复</h4>
-      <p>使用过程中遇到任何问题，远程诊断、一键修复，不影响你的正常工作。</p>
-    </div>
-    <div class="service-card">
-      <div class="service-icon">📚</div>
-      <h4>使用指导</h4>
-      <p>从部署到日常使用，图文+视频教程全覆盖。不懂随时问，有人答。</p>
-    </div>
-    <div class="service-card">
-      <div class="service-icon">🛡️</div>
-      <h4>安全巡检</h4>
-      <p>定期检查系统安全状态，及时修补漏洞，确保你的AI员工安全稳定运行。</p>
     </div>
   </div>
 </section>
